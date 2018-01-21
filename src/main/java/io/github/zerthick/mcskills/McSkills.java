@@ -20,7 +20,10 @@
 package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
+import jdk.nashorn.internal.objects.NativeString;
 import org.slf4j.Logger;
+import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.Getter;
@@ -30,6 +33,8 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
+
+import java.nio.file.Path;
 
 @Plugin(
         id = "mcskills",
@@ -44,6 +49,21 @@ public class McSkills {
 
     @Inject
     private Logger logger;
+
+    @Inject
+    @DefaultConfig(sharedRoot = false)
+    private Path defaultConfig;
+
+    @Inject
+    @ConfigDir(sharedRoot = false)
+    private Path defaultConfigDir;
+
+    public Path getDefaultConfigDir() {
+        return defaultConfigDir;
+    }
+    public Logger getLogger() {
+        return logger;
+    }
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
