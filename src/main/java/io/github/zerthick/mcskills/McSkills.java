@@ -20,6 +20,7 @@
 package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
+import io.github.zerthick.mcskills.utils.database.Database;
 import jdk.nashorn.internal.objects.NativeString;
 import org.slf4j.Logger;
 import org.spongepowered.api.config.ConfigDir;
@@ -27,6 +28,7 @@ import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.Getter;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -35,6 +37,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
 import java.nio.file.Path;
+import java.sql.SQLException;
 
 @Plugin(
         id = "mcskills",
@@ -58,11 +61,18 @@ public class McSkills {
     @ConfigDir(sharedRoot = false)
     private Path defaultConfigDir;
 
+    private Database database;
+
     public Path getDefaultConfigDir() {
         return defaultConfigDir;
     }
     public Logger getLogger() {
         return logger;
+    }
+
+    @Listener
+    public void onGameInit(GameInitializationEvent event) throws SQLException {
+        database = new Database(this);
     }
 
     @Listener

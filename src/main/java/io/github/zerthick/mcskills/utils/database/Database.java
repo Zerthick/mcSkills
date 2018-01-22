@@ -51,7 +51,5 @@ public class Database {
         } else {
             logger.error("Failed to create database tables");
         }
-
-
     }
 }
