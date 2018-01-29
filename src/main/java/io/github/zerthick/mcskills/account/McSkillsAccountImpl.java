@@ -19,19 +19,22 @@
 
 package io.github.zerthick.mcskills.account;
 
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+
 import java.util.Map;
 import java.util.UUID;
 
-public class McSkillsAccount {
+public class McSkillsAccountImpl implements McSkillsAccount {
 
     UUID playerUUID;
     Map<String, McSkillsAccountEntry> skillMap;
 
-    public McSkillsAccount(UUID playerUUID, Map<String, McSkillsAccountEntry> skillMap) {
+    public McSkillsAccountImpl(UUID playerUUID, Map<String, McSkillsAccountEntry> skillMap) {
         this.playerUUID = playerUUID;
         this.skillMap = skillMap;
     }
 
+    @Override
     public UUID getPlayerUUID() {
         return playerUUID;
     }
@@ -40,22 +43,26 @@ public class McSkillsAccount {
         return skillMap;
     }
 
+    @Override
     public int getSkillLevel(String skillID) {
         McSkillsAccountEntry entry = skillMap.get(skillID);
         return entry != null ? entry.getLevel() : 0;
     }
 
+    @Override
     public long getSkillExperience(String skillID) {
         McSkillsAccountEntry entry = skillMap.get(skillID);
         return entry != null ? entry.getExperience() : 0;
     }
 
+    @Override
     public void setSkillLevel(String skillID, int level) {
         McSkillsAccountEntry entry = skillMap.getOrDefault(skillID, new McSkillsAccountEntry(0, 0));
         entry.setLevel(level);
         skillMap.put(skillID, entry);
     }
 
+    @Override
     public void setSkillExperience(String skillID, long experience) {
         McSkillsAccountEntry entry = skillMap.getOrDefault(skillID, new McSkillsAccountEntry(0, 0));
         entry.setExperience(experience);
