@@ -1,25 +1,26 @@
 package io.github.zerthick.mcskills.utils.database;
 
 import io.github.zerthick.mcskills.McSkills;
+import io.github.zerthick.mcskills.account.McSkillsAccountEntry;
+import io.github.zerthick.mcskills.account.McSkillsAccountImpl;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.service.sql.SqlService;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Optional;
+import java.sql.*;
+import java.util.*;
 
 public class Database {
 
     private SqlService sql;
-    private McSkills plugin;
-    private String databaseUrl = "jdbc:h2:" + plugin.getDefaultConfigDir() + "/data";
-    private Logger logger = plugin.getLogger();
+    private String databaseUrl;
+    private Logger logger;
 
     public Database(McSkills plugin) throws SQLException {
-        this.plugin = plugin;
+        logger = plugin.getLogger();
+        String configDir = plugin.getDefaultConfigDir().toString();
+        databaseUrl = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
         createDatabaseTables();
     }
 
@@ -39,17 +40,83 @@ public class Database {
     private void createDatabaseTables() throws SQLException {
         String sqlCreateTable = "CREATE TABLE IF NOT EXISTS" +
                 "  `playerData` (" +
-                "  `playerUUID` VARCHAR() NOT NULL," +
-                "  `skillID` INT NOT NULL," +
-                "  `skillExperience` INT NULL," +
+                "  `playerUUID` VARCHAR(20) NOT NULL," +
+                "  `skillID` VARCHAR(20) NOT NULL," +
+                "  `skillExperience` BIGINT NULL," +
                 "  `skillLevel` INT NULL," +
                 "  PRIMARY KEY (`playerUUID`, `skillID`));";
 
-        boolean createStatement = this.getDataSource().getConnection().createStatement().execute(sqlCreateTable);
-        if (createStatement) {
-            logger.info("Database Connection Established!");
-        } else {
-            logger.error("Failed to create database tables");
+        Connection conn = getDataSource().getConnection();
+        Statement createStatement = conn.createStatement();
+        createStatement.execute(sqlCreateTable);
+        logger.info("Database Connection Established!");
+    }
+
+    /**
+     * Returns a McSkills Player account from the database
+     *
+     * @param uuid uuid of the player you want to receive an account for
+     */
+    public Optional<McSkillsAccountImpl> getPlayerAccount(UUID uuid) {
+        // set skillMap variable
+        Map<String, McSkillsAccountEntry> skillMap = new HashMap<>();
+
+        // Create connection and statement
+        try(
+        Connection conn = getDataSource().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT skillID, skillExperience, skillLevel " +
+                "FROM playerData " +
+                "WHERE playerUUID = ?")
+        ) {
+            // set uuid to provided uuid
+            ps.setString(1, String.valueOf(uuid));
+            ResultSet rs = ps.executeQuery();
+            // for each result
+            while (rs.next()) {
+                String skillID = rs.getString("skillID");
+                Long skillExperience = rs.getLong("skillExperience");
+                int skillLevel = rs.getInt("skillLevel");
+                // map level and experience
+                McSkillsAccountEntry skillMapEntry = new McSkillsAccountEntry(skillLevel, skillExperience);
+                // insert skill data into map
+                skillMap.put(skillID, skillMapEntry);
+            }
+        } catch (SQLException e) {
+            logger.warn(e.getMessage(), e);
+        }
+        // return skills map
+        return Optional.of(new McSkillsAccountImpl(uuid, skillMap));
+    }
+
+    /**
+     * Saves the McSkills account information to the database
+     *
+     * @param mcSkillsAccount account model for entering into the database
+     */
+    public void savePlayerAccount(McSkillsAccountImpl mcSkillsAccount) {
+        Map<String, McSkillsAccountEntry> skillMap = mcSkillsAccount.getSkillMap();
+        UUID uuid = mcSkillsAccount.getPlayerUUID();
+
+        try(
+                Connection conn = getDataSource().getConnection();
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO playerdata SET playerUUID = ?, skillID = ?, skillExperience = ?, skillLevel = ? " +
+                        "ON DUPLICATE KEY UPDATE " +
+                        "skillExperience = VALUES(skillExperience), skillLevel = VALUES(skillLevel)")
+                ) {
+            skillMap.forEach((k,v) -> {
+                try {
+                    ps.setLong(3, v.getExperience());
+                    ps.setInt(4, v.getLevel());
+                    ps.setString(1, uuid.toString());
+                    ps.setString(2, k);
+                    ps.addBatch();
+                } catch (SQLException e) {
+                    logger.warn(e.getMessage(), e);
+                }
+        });
+            ps.executeBatch();
+        } catch (SQLException e) {
+            logger.warn(e.getMessage(), e);
         }
     }
 }

@@ -20,6 +20,9 @@
 package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
+import io.github.zerthick.mcskills.account.McSkillsAccountEntry;
+import io.github.zerthick.mcskills.account.McSkillsAccountImpl;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import io.github.zerthick.mcskills.utils.database.Database;
 import jdk.nashorn.internal.objects.NativeString;
 import org.slf4j.Logger;
@@ -32,12 +35,14 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.*;
 
 @Plugin(
         id = "mcskills",
@@ -61,28 +66,38 @@ public class McSkills {
     @ConfigDir(sharedRoot = false)
     private Path defaultConfigDir;
 
+    private PluginContainer instance;
     private Database database;
 
     public Path getDefaultConfigDir() {
         return defaultConfigDir;
     }
+    public Path getDefaultConfig() {
+        return defaultConfig;
+    }
+    public PluginContainer getInstance() {
+        return instance;
+    }
     public Logger getLogger() {
         return logger;
+    }
+    public Database getDatabase() {
+        return database;
     }
 
     @Listener
     public void onGameInit(GameInitializationEvent event) throws SQLException {
-        database = new Database(this);
+//        database = new Database(this);
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStart(GameStartedServerEvent event) throws SQLException{
         // Hey! The server has started!
-        this.logger.info("Hello world!");
+        this.logger.info("McSkills is ready to go!");
+        database = new Database(this);
         // Try loading some configuration settings for a welcome message to players
         // when they join!
     }
-
 
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event, @Getter("getTargetEntity") Player player) {
