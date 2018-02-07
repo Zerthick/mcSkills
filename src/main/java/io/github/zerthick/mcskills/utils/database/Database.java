@@ -16,23 +16,26 @@ public class Database {
     private SqlService sql;
     private String databaseUrl;
     private Logger logger;
+    private static Database instance;
 
-    public Database(McSkills plugin) throws SQLException {
+    private Database(McSkills plugin) throws SQLException {
         logger = plugin.getLogger();
         String configDir = plugin.getDefaultConfigDir().toString();
         databaseUrl = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
         createDatabaseTables();
     }
 
+    public static Database getInstance(McSkills plugin) throws SQLException {
+        if (instance == null) {
+            instance = new Database(plugin);
+        }
+        return instance;
+    }
+
     private DataSource getDataSource() throws SQLException {
         if (this.sql == null) {
             Optional<SqlService> sqlServiceOptional = Sponge.getServiceManager().provide(SqlService.class);
-
-            if (sqlServiceOptional.isPresent()) {
-                this.sql = sqlServiceOptional.get();
-            } else {
-                throw new SQLException("Was not able to get database connection");
-            }
+            this.sql = sqlServiceOptional.orElseThrow(SQLException::new);
         }
         return sql.getDataSource(databaseUrl);
     }
@@ -71,6 +74,12 @@ public class Database {
             // set uuid to provided uuid
             ps.setString(1, String.valueOf(uuid));
             ResultSet rs = ps.executeQuery();
+
+            // check if no data
+            if (!rs.isBeforeFirst()){
+                return Optional.empty();
+            }
+
             // for each result
             while (rs.next()) {
                 String skillID = rs.getString("skillID");
@@ -82,7 +91,7 @@ public class Database {
                 skillMap.put(skillID, skillMapEntry);
             }
         } catch (SQLException e) {
-            logger.warn(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         // return skills map
         return Optional.of(new McSkillsAccountImpl(uuid, skillMap));
@@ -111,12 +120,12 @@ public class Database {
                     ps.setString(2, k);
                     ps.addBatch();
                 } catch (SQLException e) {
-                    logger.warn(e.getMessage(), e);
+                    logger.error(e.getMessage(), e);
                 }
         });
             ps.executeBatch();
         } catch (SQLException e) {
-            logger.warn(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 }

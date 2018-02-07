@@ -66,6 +66,7 @@ public class McSkills {
     @ConfigDir(sharedRoot = false)
     private Path defaultConfigDir;
 
+    @Inject
     private PluginContainer instance;
     private Database database;
 
@@ -86,15 +87,8 @@ public class McSkills {
     }
 
     @Listener
-    public void onGameInit(GameInitializationEvent event) throws SQLException {
-//        database = new Database(this);
-    }
-
-    @Listener
     public void onServerStart(GameStartedServerEvent event) throws SQLException{
         // Hey! The server has started!
-        this.logger.info("McSkills is ready to go!");
-        database = new Database(this);
         // Try loading some configuration settings for a welcome message to players
         // when they join!
     }
