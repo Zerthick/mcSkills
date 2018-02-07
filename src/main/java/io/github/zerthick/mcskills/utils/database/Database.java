@@ -17,7 +17,7 @@ public class Database {
     private String databaseUrl;
     private Logger logger;
 
-    Database(McSkills plugin) throws SQLException {
+    public Database(McSkills plugin) throws SQLException {
         logger = plugin.getLogger();
         String configDir = plugin.getDefaultConfigDir().toString();
         databaseUrl = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
