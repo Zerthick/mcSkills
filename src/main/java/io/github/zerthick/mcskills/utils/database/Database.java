@@ -18,16 +18,16 @@ public class Database {
     private Logger logger;
     private static Database instance;
 
-    private Database(McSkills plugin) throws SQLException {
+    public void init(McSkills plugin) throws SQLException {
         logger = plugin.getLogger();
         String configDir = plugin.getDefaultConfigDir().toString();
         databaseUrl = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
         createDatabaseTables();
     }
 
-    public static Database getInstance(McSkills plugin) throws SQLException {
+    public static Database getInstance() throws SQLException {
         if (instance == null) {
-            instance = new Database(plugin);
+            instance = new Database();
         }
         return instance;
     }
