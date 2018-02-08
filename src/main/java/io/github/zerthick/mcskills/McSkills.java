@@ -99,9 +99,12 @@ public class McSkills {
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        // Hey! The server has started!
-        // Try loading some configuration settings for a welcome message to players
-        // when they join!
+
+        // Log Start Up to Console
+        logger.info(
+                instance.getName() + " version " + instance.getVersion().orElse("unknown")
+                        + " enabled!");
+
     }
 
     @Listener
