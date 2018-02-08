@@ -9,7 +9,10 @@ import org.spongepowered.api.service.sql.SqlService;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Database {
 
@@ -35,7 +38,7 @@ public class Database {
     private void createDatabaseTables() throws SQLException {
         String sqlCreateTable = "CREATE TABLE IF NOT EXISTS" +
                 "  `playerData` (" +
-                "  `playerUUID` VARCHAR(20) NOT NULL," +
+                "  `playerUUID` VARCHAR(36) NOT NULL," +
                 "  `skillID` VARCHAR(20) NOT NULL," +
                 "  `skillExperience` BIGINT NULL," +
                 "  `skillLevel` INT NULL," +
