@@ -21,8 +21,8 @@ package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
-import io.github.zerthick.mcskills.utils.database.Database;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -35,9 +35,6 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.format.TextStyles;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -66,7 +63,6 @@ public class McSkills {
 
     @Inject
     private PluginContainer instance;
-    private Database database;
 
     public Path getDefaultConfigDir() {
         return defaultConfigDir;
@@ -79,9 +75,6 @@ public class McSkills {
     }
     public Logger getLogger() {
         return logger;
-    }
-    public Database getDatabase() {
-        return database;
     }
 
     @Listener
@@ -109,8 +102,18 @@ public class McSkills {
 
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event, @Getter("getTargetEntity") Player player) {
-        // The text message could be configurable, check the docs on how to do so!
-        player.sendMessage(Text.of(TextColors.AQUA, TextStyles.BOLD, "Hi " + player.getName()));
+
+
+        McSkillsAccountService accountService = Sponge.getServiceManager().provideUnchecked(McSkillsAccountService.class);
+
+        McSkillsAccount mcSkillsAccount = accountService.getOrCreateAccount(player.getUniqueId());
+
+        mcSkillsAccount.setSkillExperience("mcSkills:Test", 50);
+        mcSkillsAccount.setSkillLevel("mcSkills:Test", 1);
+
+        logger.info("Experience for Test skill of level " +
+                mcSkillsAccount.getSkillLevel("mcSkills:Test") + " is " +
+                mcSkillsAccount.getSkillExperience("mcSkills:Test"));
     }
 
 }
