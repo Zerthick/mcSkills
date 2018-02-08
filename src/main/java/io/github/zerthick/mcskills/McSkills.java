@@ -20,18 +20,17 @@
 package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
-import io.github.zerthick.mcskills.account.McSkillsAccountEntry;
-import io.github.zerthick.mcskills.account.McSkillsAccountImpl;
-import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
+import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.utils.database.Database;
-import jdk.nashorn.internal.objects.NativeString;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.Getter;
-import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -42,7 +41,6 @@ import org.spongepowered.api.text.format.TextStyles;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.*;
 
 @Plugin(
         id = "mcskills",
@@ -87,7 +85,18 @@ public class McSkills {
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) throws SQLException{
+    public void onGamePostInit(GamePostInitializationEvent event) {
+
+        // Register default Account Service
+        try {
+            Sponge.getServiceManager().setProvider(this, McSkillsAccountService.class, new McSkillsAccountServiceImpl(this));
+        } catch (SQLException e) {
+            logger.error("Error registering default account service! Error: " + e.getMessage());
+        }
+    }
+
+    @Listener
+    public void onServerStart(GameStartedServerEvent event) {
         // Hey! The server has started!
         // Try loading some configuration settings for a welcome message to players
         // when they join!
