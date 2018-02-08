@@ -89,7 +89,9 @@ public class McSkills {
 
         // Register default Account Service
         try {
-            Sponge.getServiceManager().setProvider(this, McSkillsAccountService.class, new McSkillsAccountServiceImpl(this));
+            McSkillsAccountService accountService = new McSkillsAccountServiceImpl(this);
+            Sponge.getServiceManager().setProvider(this, McSkillsAccountService.class, accountService);
+            Sponge.getEventManager().registerListeners(this, accountService);
         } catch (SQLException e) {
             logger.error("Error registering default account service! Error: " + e.getMessage());
         }
