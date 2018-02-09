@@ -17,18 +17,14 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.api.account;
+package io.github.zerthick.mckills.api.account;
 
 import java.util.UUID;
 
-public interface McSkillsAccount {
-    UUID getPlayerUUID();
+public interface McSkillsAccountService {
 
-    int getSkillLevel(String skillID);
+    McSkillsAccount getOrCreateAccount(UUID playerUniqueIdentifier);
 
-    long getSkillExperience(String skillID);
+    boolean hasAccount(UUID playerUniqueIdentifier);
 
-    void setSkillLevel(String skillID, int level);
-
-    void setSkillExperience(String skillID, long experience);
 }

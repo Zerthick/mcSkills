@@ -34,6 +34,13 @@ repositories {
     }
 }
 
+sourceSets {
+    api
+    main {
+        compileClasspath += api.compileClasspath + api.output
+    }
+}
+
 spongestart{
     minecraft '1.12.2'
 }
