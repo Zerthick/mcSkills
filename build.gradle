@@ -46,5 +46,6 @@ spongestart{
 }
 
 dependencies {
+    apiCompile 'org.spongepowered:spongeapi:7.0.0'
     compile 'org.spongepowered:spongeapi:7.0.0'
 }

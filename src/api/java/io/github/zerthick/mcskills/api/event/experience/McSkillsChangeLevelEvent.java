@@ -17,18 +17,23 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mckills.api.account;
+package io.github.zerthick.mcskills.api.event.experience;
 
-import java.util.UUID;
+import org.spongepowered.api.event.Cancellable;
+import org.spongepowered.api.event.entity.TargetEntityEvent;
 
-public interface McSkillsAccount {
-    UUID getPlayerUUID();
+public interface McSkillsChangeLevelEvent extends TargetEntityEvent, Cancellable {
 
-    int getSkillLevel(String skillID);
+    int getLevel();
 
-    long getSkillExperience(String skillID);
+    void setLevel(int level);
 
-    void setSkillLevel(String skillID, int level);
+    int getOriginalLevel();
 
-    void setSkillExperience(String skillID, long experience);
+    interface Up {
+    }
+
+    interface Down {
+    }
+
 }

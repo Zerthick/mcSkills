@@ -19,7 +19,7 @@
 
 package io.github.zerthick.mcskills.account;
 
-import io.github.zerthick.mckills.api.account.McSkillsAccount;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 
 import java.util.Map;
 import java.util.UUID;

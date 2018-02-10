@@ -17,23 +17,18 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.experience.formula;
+package io.github.zerthick.mcskills.api.account;
 
-import io.github.zerthick.mcskills.api.experience.McSkillsExperienceFormula;
+import java.util.UUID;
 
-public class ExponentialFormula implements McSkillsExperienceFormula {
-    private float multiplier;
-    private float exponent;
-    private float base;
+public interface McSkillsAccount {
+    UUID getPlayerUUID();
 
-    public ExponentialFormula(float multiplier, float exponent, float base) {
-        this.multiplier = multiplier;
-        this.exponent = exponent;
-        this.base = base;
-    }
+    int getSkillLevel(String skillID);
 
-    @Override
-    public long getLevelExperience(int level) {
-        return Math.round(multiplier * Math.pow(level, exponent) + base);
-    }
+    long getSkillExperience(String skillID);
+
+    void setSkillLevel(String skillID, int level);
+
+    void setSkillExperience(String skillID, long experience);
 }

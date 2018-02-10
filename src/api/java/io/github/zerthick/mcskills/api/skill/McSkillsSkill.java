@@ -17,23 +17,20 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.experience.formula;
+package io.github.zerthick.mcskills.api.skill;
 
-import io.github.zerthick.mcskills.api.experience.McSkillsExperienceFormula;
+import org.spongepowered.api.text.Text;
 
-public class ExponentialFormula implements McSkillsExperienceFormula {
-    private float multiplier;
-    private float exponent;
-    private float base;
+public interface McSkillsSkill {
 
-    public ExponentialFormula(float multiplier, float exponent, float base) {
-        this.multiplier = multiplier;
-        this.exponent = exponent;
-        this.base = base;
-    }
+    String getSkillID();
 
-    @Override
-    public long getLevelExperience(int level) {
-        return Math.round(multiplier * Math.pow(level, exponent) + base);
-    }
+    String getSkillPermission();
+
+    Text getSkillName();
+
+    Text getSkillDescription();
+
+    void registerListeners();
+
 }

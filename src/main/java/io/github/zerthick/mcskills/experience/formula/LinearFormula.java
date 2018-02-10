@@ -19,7 +19,9 @@
 
 package io.github.zerthick.mcskills.experience.formula;
 
-public class LinearFormula implements ExperienceFormula {
+import io.github.zerthick.mcskills.api.experience.McSkillsExperienceFormula;
+
+public class LinearFormula implements McSkillsExperienceFormula {
     private float base;
     private float multiplier;
 

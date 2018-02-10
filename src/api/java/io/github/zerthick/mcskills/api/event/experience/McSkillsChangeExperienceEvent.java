@@ -17,23 +17,22 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.experience.formula;
+package io.github.zerthick.mcskills.api.event.experience;
 
-import io.github.zerthick.mcskills.api.experience.McSkillsExperienceFormula;
+import org.spongepowered.api.event.Cancellable;
+import org.spongepowered.api.event.entity.TargetEntityEvent;
 
-public class ExponentialFormula implements McSkillsExperienceFormula {
-    private float multiplier;
-    private float exponent;
-    private float base;
+public interface McSkillsChangeExperienceEvent extends TargetEntityEvent, Cancellable {
 
-    public ExponentialFormula(float multiplier, float exponent, float base) {
-        this.multiplier = multiplier;
-        this.exponent = exponent;
-        this.base = base;
+    long getExperience();
+
+    void setExperience(long experience);
+
+    long getOriginalExperience();
+
+    interface Gain {
     }
 
-    @Override
-    public long getLevelExperience(int level) {
-        return Math.round(multiplier * Math.pow(level, exponent) + base);
+    interface Lose {
     }
 }

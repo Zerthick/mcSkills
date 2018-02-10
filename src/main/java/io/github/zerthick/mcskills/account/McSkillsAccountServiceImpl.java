@@ -19,9 +19,9 @@
 
 package io.github.zerthick.mcskills.account;
 
-import io.github.zerthick.mckills.api.account.McSkillsAccount;
-import io.github.zerthick.mckills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.McSkills;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.utils.database.Database;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;

@@ -20,9 +20,9 @@
 package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
-import io.github.zerthick.mckills.api.account.McSkillsAccount;
-import io.github.zerthick.mckills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;

@@ -17,9 +17,17 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.experience.formula;
+package io.github.zerthick.mcskills.api.skill;
 
-public interface ExperienceFormula {
+import java.util.Collection;
+import java.util.Optional;
 
-    long getLevelExperience(int level);
+public interface McSKillsSkillService {
+
+    void registerSkill(McSkillsSkill skill);
+
+    Optional<McSkillsSkill> getSkill(String skillID);
+
+    Collection<McSkillsSkill> getRegisteredSkills();
+
 }
