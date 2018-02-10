@@ -20,9 +20,9 @@
 package io.github.zerthick.mcskills.api.event.experience;
 
 import org.spongepowered.api.event.Cancellable;
-import org.spongepowered.api.event.entity.TargetEntityEvent;
+import org.spongepowered.api.event.entity.living.humanoid.player.TargetPlayerEvent;
 
-public interface McSkillsChangeLevelEvent extends TargetEntityEvent, Cancellable {
+public interface McSkillsChangeLevelEvent extends TargetPlayerEvent, Cancellable {
 
     int getLevel();
 
@@ -30,10 +30,10 @@ public interface McSkillsChangeLevelEvent extends TargetEntityEvent, Cancellable
 
     int getOriginalLevel();
 
-    interface Up {
+    interface Up extends McSkillsChangeLevelEvent {
     }
 
-    interface Down {
+    interface Down extends McSkillsChangeLevelEvent {
     }
 
 }

@@ -20,9 +20,9 @@
 package io.github.zerthick.mcskills.api.event.experience;
 
 import org.spongepowered.api.event.Cancellable;
-import org.spongepowered.api.event.entity.TargetEntityEvent;
+import org.spongepowered.api.event.entity.living.humanoid.player.TargetPlayerEvent;
 
-public interface McSkillsChangeExperienceEvent extends TargetEntityEvent, Cancellable {
+public interface McSkillsChangeExperienceEvent extends TargetPlayerEvent, Cancellable {
 
     long getExperience();
 
@@ -30,9 +30,9 @@ public interface McSkillsChangeExperienceEvent extends TargetEntityEvent, Cancel
 
     long getOriginalExperience();
 
-    interface Gain {
+    interface Gain extends McSkillsChangeExperienceEvent {
     }
 
-    interface Lose {
+    interface Lose extends McSkillsChangeExperienceEvent {
     }
 }

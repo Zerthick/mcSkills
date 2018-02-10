@@ -19,7 +19,7 @@
 
 package io.github.zerthick.mcskills.api.experience;
 
-import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+import org.spongepowered.api.entity.living.player.Player;
 
 public interface McSkillsExperienceService {
 
@@ -27,8 +27,8 @@ public interface McSkillsExperienceService {
 
     long getLevelExperience(int level);
 
-    void addSkillExperience(McSkillsAccount account, String skillID, long experience);
+    void addSkillExperience(Player player, String skillID, long experience);
 
-    void removeSkillExperience(McSkillsAccount account, String skillID, long experience);
+    void removeSkillExperience(Player player, String skillID, long experience);
 
 }
