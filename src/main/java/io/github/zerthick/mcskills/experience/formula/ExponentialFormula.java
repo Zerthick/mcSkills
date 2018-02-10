@@ -19,7 +19,7 @@
 
 package io.github.zerthick.mcskills.experience.formula;
 
-import io.github.zerthick.mcskills.api.experience.McSkillsExperienceFormula;
+import io.github.zerthick.mcskills.api.experience.formula.McSkillsExperienceFormula;
 
 public class ExponentialFormula implements McSkillsExperienceFormula {
     private float multiplier;

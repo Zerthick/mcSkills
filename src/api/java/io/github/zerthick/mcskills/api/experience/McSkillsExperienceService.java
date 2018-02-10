@@ -19,6 +19,7 @@
 
 package io.github.zerthick.mcskills.api.experience;
 
+import io.github.zerthick.mcskills.api.experience.formula.McSkillsExperienceFormula;
 import org.spongepowered.api.entity.living.player.Player;
 
 public interface McSkillsExperienceService {

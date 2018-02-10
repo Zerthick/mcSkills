@@ -17,7 +17,7 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.api.experience;
+package io.github.zerthick.mcskills.api.experience.formula;
 
 public interface McSkillsExperienceFormula {
 
