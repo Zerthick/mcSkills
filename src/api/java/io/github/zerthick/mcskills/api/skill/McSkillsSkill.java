@@ -19,7 +19,10 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
+import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import org.spongepowered.api.text.Text;
+
+import java.util.Collection;
 
 public interface McSkillsSkill {
 
@@ -31,6 +34,8 @@ public interface McSkillsSkill {
 
     Text getSkillDescription();
 
-    void registerListeners();
+    Collection<McSkillsAbility> getAbilities();
+
+    void registerListeners(Object plugin);
 
 }

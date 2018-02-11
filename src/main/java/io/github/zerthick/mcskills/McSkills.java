@@ -98,7 +98,7 @@ public class McSkills {
         Sponge.getServiceManager().setProvider(this, McSkillsExperienceService.class, experienceService);
 
         // Register default Skill Service
-        McSkillsSkillService skillService = new McSkillsSkillServiceImpl();
+        McSkillsSkillService skillService = new McSkillsSkillServiceImpl(this);
         Sponge.getServiceManager().setProvider(this, McSkillsSkillService.class, skillService);
     }
 

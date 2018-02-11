@@ -31,6 +31,6 @@ public interface McSkillsAbility {
 
     Text getAbilityDescription();
 
-    void registerListeners();
+    void registerListeners(Object plugin);
 
 }

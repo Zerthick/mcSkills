@@ -19,6 +19,7 @@
 
 package io.github.zerthick.mcskills.skill;
 
+import io.github.zerthick.mcskills.McSkills;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
 
@@ -29,15 +30,17 @@ import java.util.Optional;
 
 public class McSkillsSkillServiceImpl implements McSkillsSkillService {
 
+    private McSkills plugin;
     private Map<String, McSkillsSkill> skillMap;
 
-    public McSkillsSkillServiceImpl() {
+    public McSkillsSkillServiceImpl(McSkills plugin) {
+        this.plugin = plugin;
         skillMap = new HashMap<>();
     }
 
     @Override
     public void registerSkill(McSkillsSkill skill) {
-        skill.registerListeners();
+        skill.registerListeners(plugin);
         skillMap.put(skill.getSkillID(), skill);
     }
 
