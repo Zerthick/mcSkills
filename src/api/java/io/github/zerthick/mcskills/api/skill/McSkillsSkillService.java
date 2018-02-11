@@ -22,7 +22,7 @@ package io.github.zerthick.mcskills.api.skill;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface McSKillsSkillService {
+public interface McSkillsSkillService {
 
     void registerSkill(McSkillsSkill skill);
 
