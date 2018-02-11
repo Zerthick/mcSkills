@@ -19,25 +19,21 @@
 
 package io.github.zerthick.mcskills.api.event.experience;
 
-import org.spongepowered.api.event.Cancellable;
-import org.spongepowered.api.event.entity.living.humanoid.player.TargetPlayerEvent;
+import io.github.zerthick.mcskills.api.account.McSkillsAccount;
+import org.spongepowered.api.event.cause.EventContextKey;
 
-public interface McSkillsChangeLevelEvent extends TargetPlayerEvent, Cancellable {
+public class McSkillsEventContextKeys {
 
-    int getLevel();
+    public static final EventContextKey<String> MCSKILLS_SKILL_ID = EventContextKey.builder(String.class)
+            .id("mcskills:skill_id")
+            .name("mcSkills Skill ID")
+            .build();
 
-    void setLevel(int level);
+    public static final EventContextKey<McSkillsAccount> MCSKILLS_ACCOUNT = EventContextKey.builder(McSkillsAccount.class)
+            .id("mcskills:account")
+            .name("mcSkills Account")
+            .build();
 
-    int getOriginalLevel();
-
-    long getRemainingExperience();
-
-    void setRemainingExperience(long experience);
-
-    interface Up extends McSkillsChangeLevelEvent {
+    private McSkillsEventContextKeys() {
     }
-
-    interface Down extends McSkillsChangeLevelEvent {
-    }
-
 }

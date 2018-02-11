@@ -29,13 +29,15 @@ public class McSkillsChangeLevelEventDownImpl implements McSkillsChangeLevelEven
     private final Cause cause;
     private final int originalLevel;
     private int level;
+    private long remainingExperience;
     private boolean cancelled = false;
 
-    public McSkillsChangeLevelEventDownImpl(Player player, int level, Cause cause) {
+    public McSkillsChangeLevelEventDownImpl(Player player, int originalLevel, int level, long remainingExperience, Cause cause) {
         this.player = player;
         this.cause = cause;
-        originalLevel = level;
+        this.originalLevel = originalLevel;
         this.level = level;
+        this.remainingExperience = remainingExperience;
     }
 
     @Override
@@ -51,6 +53,16 @@ public class McSkillsChangeLevelEventDownImpl implements McSkillsChangeLevelEven
     @Override
     public int getOriginalLevel() {
         return originalLevel;
+    }
+
+    @Override
+    public long getRemainingExperience() {
+        return remainingExperience;
+    }
+
+    @Override
+    public void setRemainingExperience(long experience) {
+        this.remainingExperience = experience;
     }
 
     @Override

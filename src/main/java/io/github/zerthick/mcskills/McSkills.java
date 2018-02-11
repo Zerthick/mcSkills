@@ -23,6 +23,8 @@ import com.google.inject.Inject;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
 import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
+import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
+import io.github.zerthick.mcskills.experience.McSkillsExperienceServiceImpl;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -88,6 +90,10 @@ public class McSkills {
         } catch (SQLException e) {
             logger.error("Error registering default account service! Error: " + e.getMessage());
         }
+
+        // Register default Experience Service
+        McSkillsExperienceService experienceService = new McSkillsExperienceServiceImpl();
+        Sponge.getServiceManager().setProvider(this, McSkillsExperienceService.class, experienceService);
     }
 
     @Listener

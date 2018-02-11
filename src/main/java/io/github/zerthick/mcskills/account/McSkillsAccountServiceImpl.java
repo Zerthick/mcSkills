@@ -37,13 +37,11 @@ import java.util.concurrent.TimeUnit;
 
 public class McSkillsAccountServiceImpl implements McSkillsAccountService {
 
-    private McSkills plugin;
     private Database db;
     private Map<UUID, McSkillsAccountImpl> accountCache;
 
     public McSkillsAccountServiceImpl(McSkills plugin) throws SQLException {
 
-        this.plugin = plugin;
         db = new Database(plugin);
         accountCache = new HashMap<>();
 
