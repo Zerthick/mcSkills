@@ -24,7 +24,9 @@ import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
 import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
+import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
 import io.github.zerthick.mcskills.experience.McSkillsExperienceServiceImpl;
+import io.github.zerthick.mcskills.skill.McSkillsSkillServiceImpl;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -94,6 +96,10 @@ public class McSkills {
         // Register default Experience Service
         McSkillsExperienceService experienceService = new McSkillsExperienceServiceImpl();
         Sponge.getServiceManager().setProvider(this, McSkillsExperienceService.class, experienceService);
+
+        // Register default Skill Service
+        McSkillsSkillService skillService = new McSkillsSkillServiceImpl();
+        Sponge.getServiceManager().setProvider(this, McSkillsSkillService.class, skillService);
     }
 
     @Listener
