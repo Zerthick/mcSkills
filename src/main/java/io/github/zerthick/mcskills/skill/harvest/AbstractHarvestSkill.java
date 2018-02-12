@@ -30,15 +30,18 @@ import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.text.Text;
 
+import java.util.HashSet;
 import java.util.Map;
 
 public class AbstractHarvestSkill extends AbstractMcSkillsSkill {
 
-    private Map<BlockState, Integer> blockExperienceMap;
+    protected Map<BlockState, Integer> blockExperienceMap;
+    protected HashSet<BlockState> playerMonitoredBlocks;
 
-    public AbstractHarvestSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Map<BlockState, Integer> blockExperienceMap) {
+    public AbstractHarvestSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Map<BlockState, Integer> blockExperienceMap, HashSet<BlockState> playerMonitoredBlocks) {
         super(skillID, skillPermission, skillName, skillDescription);
         this.blockExperienceMap = blockExperienceMap;
+        this.playerMonitoredBlocks = playerMonitoredBlocks;
     }
 
     @Listener
@@ -50,7 +53,7 @@ public class AbstractHarvestSkill extends AbstractMcSkillsSkill {
 
             event.getTransactions().stream()
                     .map(Transaction::getOriginal)
-                    .filter(blockSnapshot -> !blockSnapshot.getCreator().isPresent())
+                    .filter(blockSnapshot -> !(playerMonitoredBlocks.contains(blockSnapshot.getState()) && blockSnapshot.getCreator().isPresent()))
                     .map(BlockSnapshot::getState)
                     .filter(blockState -> blockExperienceMap.containsKey(blockState))
                     .forEach(blockState ->
@@ -58,4 +61,5 @@ public class AbstractHarvestSkill extends AbstractMcSkillsSkill {
         }
 
     }
+
 }

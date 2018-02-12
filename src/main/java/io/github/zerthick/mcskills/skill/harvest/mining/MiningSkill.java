@@ -25,12 +25,12 @@ import io.github.zerthick.mcskills.skill.harvest.AbstractHarvestSkill;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.text.Text;
 
+import java.util.HashSet;
 import java.util.Map;
 
 public class MiningSkill extends AbstractHarvestSkill {
 
-    public MiningSkill(Text skillName, Text skillDescription, Map<BlockState, Integer> blockExperienceMap) {
-        super(SkillIDs.MINING, SkillPermissions.MINING, skillName, skillDescription, blockExperienceMap);
+    public MiningSkill(Text skillName, Text skillDescription, Map<BlockState, Integer> blockExperienceMap, HashSet<BlockState> playerMonitoredBlocks) {
+        super(SkillIDs.MINING, SkillPermissions.MINING, skillName, skillDescription, blockExperienceMap, playerMonitoredBlocks);
     }
-
 }
