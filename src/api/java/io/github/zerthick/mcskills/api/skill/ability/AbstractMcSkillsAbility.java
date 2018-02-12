@@ -22,14 +22,14 @@ package io.github.zerthick.mcskills.api.skill.ability;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
-public abstract class McSkillsAbstractAbility implements McSkillsAbility {
+public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
 
     protected String abilityID;
     protected String abilityPermission;
     protected Text abilityName;
     protected Text abilityDescription;
 
-    public McSkillsAbstractAbility(String abilityID, String abilityPermission, Text abilityName, Text abilityDescription) {
+    public AbstractMcSkillsAbility(String abilityID, String abilityPermission, Text abilityName, Text abilityDescription) {
         this.abilityID = abilityID;
         this.abilityPermission = abilityPermission;
         this.abilityName = abilityName;
