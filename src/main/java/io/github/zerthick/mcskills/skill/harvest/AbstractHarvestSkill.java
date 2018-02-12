@@ -44,15 +44,18 @@ public class AbstractHarvestSkill extends AbstractMcSkillsSkill {
     @Listener
     public void onBlockBreak(ChangeBlockEvent.Break event, @Root Player player) {
 
-        McSkillsExperienceService experienceService = getExperienceService();
+        if (player.hasPermission(skillPermission)) {
 
-        event.getTransactions().stream()
-                .map(Transaction::getOriginal)
-                .filter(blockSnapshot -> !blockSnapshot.getCreator().isPresent())
-                .map(BlockSnapshot::getState)
-                .filter(blockState -> blockExperienceMap.containsKey(blockState))
-                .forEach(blockState ->
-                        experienceService.addSkillExperience(player, skillID, blockExperienceMap.get(blockState)));
+            McSkillsExperienceService experienceService = getExperienceService();
+
+            event.getTransactions().stream()
+                    .map(Transaction::getOriginal)
+                    .filter(blockSnapshot -> !blockSnapshot.getCreator().isPresent())
+                    .map(BlockSnapshot::getState)
+                    .filter(blockState -> blockExperienceMap.containsKey(blockState))
+                    .forEach(blockState ->
+                            experienceService.addSkillExperience(player, skillID, blockExperienceMap.get(blockState)));
+        }
 
     }
 }
