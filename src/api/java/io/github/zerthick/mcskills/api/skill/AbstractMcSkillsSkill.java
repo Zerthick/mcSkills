@@ -25,7 +25,6 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public abstract class AbstractMcSkillsSkill implements McSkillsSkill {
 
@@ -36,13 +35,12 @@ public abstract class AbstractMcSkillsSkill implements McSkillsSkill {
 
     protected Collection<McSkillsAbility> abilities;
 
-    public AbstractMcSkillsSkill(String skillID, String skillPermission, Text skillName, Text skillDescription) {
+    public AbstractMcSkillsSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities) {
         this.skillID = skillID;
         this.skillPermission = skillPermission;
         this.skillName = skillName;
         this.skillDescription = skillDescription;
-
-        abilities = new HashSet<>();
+        this.abilities = abilities;
     }
 
     @Override

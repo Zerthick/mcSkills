@@ -21,6 +21,7 @@ package io.github.zerthick.mcskills.skill.harvest;
 
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.AbstractMcSkillsSkill;
+import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.data.Transaction;
@@ -30,14 +31,15 @@ import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.text.Text;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class AbstractHarvestSkill extends AbstractMcSkillsSkill {
 
     protected Map<BlockState, Integer> blockExperienceMap;
 
-    public AbstractHarvestSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Map<BlockState, Integer> blockExperienceMap) {
-        super(skillID, skillPermission, skillName, skillDescription);
+    public AbstractHarvestSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities, Map<BlockState, Integer> blockExperienceMap) {
+        super(skillID, skillPermission, skillName, skillDescription, abilities);
         this.blockExperienceMap = blockExperienceMap;
     }
 
