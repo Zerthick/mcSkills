@@ -21,20 +21,14 @@ package io.github.zerthick.mcskills.api.skill.ability;
 
 import org.spongepowered.api.text.Text;
 
-public interface McSkillsAbility {
+public abstract class AbstractMcSkillsPassiveAbility extends AbstractMcSkillsAbility {
 
-    String getAbilityID();
+    public AbstractMcSkillsPassiveAbility(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+        super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
+    }
 
-    String getAbilityPermission();
-
-    int getAbilityLevel();
-
-    Text getAbilityName();
-
-    Text getAbilityDescription();
-
-    AbilityType getAbilityType();
-
-    void registerListeners(Object plugin);
-
+    @Override
+    public AbilityType getAbilityType() {
+        return AbilityType.PASSIVE;
+    }
 }

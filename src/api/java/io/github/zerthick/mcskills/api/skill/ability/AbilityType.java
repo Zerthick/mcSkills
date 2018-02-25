@@ -19,22 +19,7 @@
 
 package io.github.zerthick.mcskills.api.skill.ability;
 
-import org.spongepowered.api.text.Text;
-
-public interface McSkillsAbility {
-
-    String getAbilityID();
-
-    String getAbilityPermission();
-
-    int getAbilityLevel();
-
-    Text getAbilityName();
-
-    Text getAbilityDescription();
-
-    AbilityType getAbilityType();
-
-    void registerListeners(Object plugin);
-
+public enum AbilityType {
+    ACTIVE,
+    PASSIVE
 }

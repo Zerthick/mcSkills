@@ -67,16 +67,4 @@ public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
     public void registerListeners(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
     }
-
-    public abstract class Active extends AbstractMcSkillsAbility {
-        public Active(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
-            super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
-        }
-    }
-
-    public abstract class Passive extends AbstractMcSkillsAbility {
-        public Passive(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
-            super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
-        }
-    }
 }
