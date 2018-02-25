@@ -27,6 +27,8 @@ public interface McSkillsAbility {
 
     String getAbilityPermission();
 
+    int getAbilityLevel();
+
     Text getAbilityName();
 
     Text getAbilityDescription();

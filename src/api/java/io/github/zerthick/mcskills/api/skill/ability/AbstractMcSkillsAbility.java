@@ -26,34 +26,16 @@ public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
 
     protected String abilityID;
     protected String abilityPermission;
+    protected int abilityLevel;
     protected Text abilityName;
     protected Text abilityDescription;
 
-    public AbstractMcSkillsAbility(String abilityID, String abilityPermission, Text abilityName, Text abilityDescription) {
+    public AbstractMcSkillsAbility(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
         this.abilityID = abilityID;
         this.abilityPermission = abilityPermission;
+        this.abilityLevel = abilityLevel;
         this.abilityName = abilityName;
         this.abilityDescription = abilityDescription;
-    }
-
-    @Override
-    public String getAbilityID() {
-        return abilityID;
-    }
-
-    @Override
-    public String getAbilityPermission() {
-        return abilityPermission;
-    }
-
-    @Override
-    public Text getAbilityName() {
-        return abilityName;
-    }
-
-    @Override
-    public Text getAbilityDescription() {
-        return abilityDescription;
     }
 
     @Override
