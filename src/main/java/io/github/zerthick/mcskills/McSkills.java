@@ -21,7 +21,6 @@ package io.github.zerthick.mcskills;
 
 import com.google.inject.Inject;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
-import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
@@ -32,12 +31,9 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
@@ -45,6 +41,7 @@ import org.spongepowered.api.text.Text;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 @Plugin(
         id = "mcskills",
@@ -110,7 +107,7 @@ public class McSkills {
 
         // Register basic skills TODO: Check to see if skill should be enabled from a config
         McSkillsSkillService skillService = Sponge.getServiceManager().provideUnchecked(McSkillsSkillService.class);
-        skillService.registerSkill(new MiningSkill(Text.of("Mining"), Text.of("Mine stuff!"), new HashMap<>()));
+        skillService.registerSkill(new MiningSkill(Text.of("Mining"), Text.of("Mine stuff!"), new HashSet<>(), new HashMap<>()));
 
         // Log Start Up to Console
         logger.info(
@@ -119,20 +116,5 @@ public class McSkills {
 
     }
 
-    @Listener
-    public void onPlayerJoin(ClientConnectionEvent.Join event, @Getter("getTargetEntity") Player player) {
-
-
-        McSkillsAccountService accountService = Sponge.getServiceManager().provideUnchecked(McSkillsAccountService.class);
-
-        McSkillsAccount mcSkillsAccount = accountService.getOrCreateAccount(player.getUniqueId());
-
-        mcSkillsAccount.setSkillExperience("mcSkills:Test", 50);
-        mcSkillsAccount.setSkillLevel("mcSkills:Test", 1);
-
-        logger.info("Experience for Test skill of level " +
-                mcSkillsAccount.getSkillLevel("mcSkills:Test") + " is " +
-                mcSkillsAccount.getSkillExperience("mcSkills:Test"));
-    }
 
 }
