@@ -22,7 +22,7 @@ package io.github.zerthick.mcskills.api.skill.ability;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
-public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
+abstract class AbstractMcSkillsAbility implements McSkillsAbility {
 
     protected final String abilityID;
     protected final String abilityPermission;
