@@ -22,5 +22,7 @@ package io.github.zerthick.mcskills.api.skill;
 public class SkillPermissions {
 
     public final static String MINING = "mcskills.skill.mining";
+    public final static String GARDENING = "mcskills.skill.gardening";
+    public final static String WOODCUTTING = "mcskills.skill.woodcutting";
 
 }

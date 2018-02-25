@@ -17,7 +17,7 @@
  * along with mcSkills.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.mcskills.skill.harvest.mining;
+package io.github.zerthick.mcskills.skill.harvest.woodcutting;
 
 import io.github.zerthick.mcskills.api.skill.SkillIDs;
 import io.github.zerthick.mcskills.api.skill.SkillPermissions;
@@ -29,9 +29,9 @@ import org.spongepowered.api.text.Text;
 import java.util.Collection;
 import java.util.Map;
 
-public class MiningSkill extends AbstractHarvestSkill {
+public class WoodcuttingSkill extends AbstractHarvestSkill {
 
-    public MiningSkill(Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities, Map<BlockState, Integer> blockExperienceMap) {
-        super(SkillIDs.MINING, SkillPermissions.MINING, skillName, skillDescription, abilities, blockExperienceMap);
+    public WoodcuttingSkill(Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities, Map<BlockState, Integer> blockExperienceMap) {
+        super(SkillIDs.WOODCUTTING, SkillPermissions.WOODCUTTING, skillName, skillDescription, abilities, blockExperienceMap);
     }
 }
