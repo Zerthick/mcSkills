@@ -55,7 +55,7 @@ public class MiningSkillSerializer implements TypeSerializer<MiningSkill> {
         blockTypeExperienceMap.forEach((k, v) -> k.getAllBlockStates().forEach(blockState -> blockExperienceMap.put(blockState, v)));
 
         blockExperienceMap.putAll(value.getNode("experience", "blockstates").getValue(new TypeToken<Map<BlockState, Integer>>() {
-        }));
+        }, new HashMap<>()));
 
         return new MiningSkill(skillName, skillDescription, abilities, blockExperienceMap);
     }

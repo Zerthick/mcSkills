@@ -55,7 +55,7 @@ public class GardeningSkillSerializer implements TypeSerializer<GardeningSkill> 
         blockTypeExperienceMap.forEach((k, v) -> k.getAllBlockStates().forEach(blockState -> blockExperienceMap.put(blockState, v)));
 
         blockExperienceMap.putAll(value.getNode("experience", "blockstates").getValue(new TypeToken<Map<BlockState, Integer>>() {
-        }));
+        }, new HashMap<>()));
 
         return new GardeningSkill(skillName, skillDescription, abilities, blockExperienceMap);
     }
