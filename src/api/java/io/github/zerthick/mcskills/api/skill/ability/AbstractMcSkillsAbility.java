@@ -24,13 +24,15 @@ import org.spongepowered.api.text.Text;
 
 abstract class AbstractMcSkillsAbility implements McSkillsAbility {
 
+    protected final String skillID;
     protected final String abilityID;
     protected final String abilityPermission;
     protected final int abilityLevel;
     protected final Text abilityName;
     protected final Text abilityDescription;
 
-    public AbstractMcSkillsAbility(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+    AbstractMcSkillsAbility(String skillID, String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+        this.skillID = skillID;
         this.abilityID = abilityID;
         this.abilityPermission = abilityPermission;
         this.abilityLevel = abilityLevel;

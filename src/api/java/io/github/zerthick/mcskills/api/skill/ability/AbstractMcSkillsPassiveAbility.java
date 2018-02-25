@@ -23,8 +23,8 @@ import org.spongepowered.api.text.Text;
 
 public abstract class AbstractMcSkillsPassiveAbility extends AbstractMcSkillsAbility {
 
-    public AbstractMcSkillsPassiveAbility(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
-        super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
+    public AbstractMcSkillsPassiveAbility(String skillID, String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+        super(skillID, abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
     }
 
     @Override
