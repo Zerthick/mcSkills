@@ -19,6 +19,7 @@
 
 package io.github.zerthick.mcskills.api.skill.ability;
 
+import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
@@ -68,5 +69,9 @@ abstract class AbstractMcSkillsAbility implements McSkillsAbility {
     @Override
     public void registerListeners(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
+    }
+
+    protected McSkillsExperienceService getExperienceService() {
+        return Sponge.getServiceManager().provideUnchecked(McSkillsExperienceService.class);
     }
 }
