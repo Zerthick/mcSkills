@@ -24,11 +24,11 @@ import org.spongepowered.api.text.Text;
 
 public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
 
-    protected String abilityID;
-    protected String abilityPermission;
-    protected int abilityLevel;
-    protected Text abilityName;
-    protected Text abilityDescription;
+    protected final String abilityID;
+    protected final String abilityPermission;
+    protected final int abilityLevel;
+    protected final Text abilityName;
+    protected final Text abilityDescription;
 
     public AbstractMcSkillsAbility(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
         this.abilityID = abilityID;
@@ -39,7 +39,44 @@ public abstract class AbstractMcSkillsAbility implements McSkillsAbility {
     }
 
     @Override
+    public String getAbilityID() {
+        return abilityID;
+    }
+
+    @Override
+    public String getAbilityPermission() {
+        return abilityPermission;
+    }
+
+    @Override
+    public int getAbilityLevel() {
+        return abilityLevel;
+    }
+
+    @Override
+    public Text getAbilityName() {
+        return abilityName;
+    }
+
+    @Override
+    public Text getAbilityDescription() {
+        return abilityDescription;
+    }
+
+    @Override
     public void registerListeners(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
+    }
+
+    public abstract class Active extends AbstractMcSkillsAbility {
+        public Active(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+            super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
+        }
+    }
+
+    public abstract class Passive extends AbstractMcSkillsAbility {
+        public Passive(String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription) {
+            super(abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
+        }
     }
 }
