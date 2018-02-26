@@ -26,6 +26,7 @@ import io.github.zerthick.mcskills.utils.database.Database;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.Getter;
+import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.scheduler.Task;
 
@@ -87,5 +88,12 @@ public class McSkillsAccountServiceImpl implements McSkillsAccountService {
         if (accountCache.containsKey(playerUniqueIdentifier)) {
             db.savePlayerAccount(accountCache.remove(playerUniqueIdentifier));
         }
+    }
+
+    @Listener
+    public void onServerStop(GameStoppedServerEvent event) {
+
+        // Save any remaining accounts
+        accountCache.values().forEach(db::savePlayerAccount);
     }
 }
