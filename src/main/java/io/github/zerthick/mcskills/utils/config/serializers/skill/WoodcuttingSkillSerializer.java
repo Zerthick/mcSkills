@@ -21,7 +21,6 @@ package io.github.zerthick.mcskills.utils.config.serializers.skill;
 
 import com.google.common.reflect.TypeToken;
 import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
-import io.github.zerthick.mcskills.skill.harvest.gardening.GardeningSkill;
 import io.github.zerthick.mcskills.skill.harvest.woodcutting.WoodcuttingSkill;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -40,7 +39,7 @@ import java.util.Map;
 public class WoodcuttingSkillSerializer implements TypeSerializer<WoodcuttingSkill> {
 
     public static void register() {
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(GardeningSkill.class), new GardeningSkillSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(WoodcuttingSkill.class), new WoodcuttingSkillSerializer());
     }
 
     @Override

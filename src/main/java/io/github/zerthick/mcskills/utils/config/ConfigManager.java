@@ -24,7 +24,9 @@ import io.github.zerthick.mcskills.api.experience.formula.McSkillsExperienceForm
 import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
 import io.github.zerthick.mcskills.experience.formula.ExponentialFormula;
 import io.github.zerthick.mcskills.experience.formula.LinearFormula;
+import io.github.zerthick.mcskills.skill.harvest.gardening.GardeningSkill;
 import io.github.zerthick.mcskills.skill.harvest.mining.MiningSkill;
+import io.github.zerthick.mcskills.skill.harvest.woodcutting.WoodcuttingSkill;
 import io.github.zerthick.mcskills.utils.config.serializers.formula.ExponentialFormulaSerializer;
 import io.github.zerthick.mcskills.utils.config.serializers.formula.LinearFormulaSerializer;
 import io.github.zerthick.mcskills.utils.config.serializers.skill.GardeningSkillSerializer;
@@ -94,9 +96,9 @@ public class ConfigManager {
 
         loadSkill(instance, "mining.conf", TypeToken.of(MiningSkill.class), configDir)
                     .ifPresent(skills::add);
-        loadSkill(instance, "gardening.conf", TypeToken.of(MiningSkill.class), configDir)
+        loadSkill(instance, "gardening.conf", TypeToken.of(GardeningSkill.class), configDir)
                     .ifPresent(skills::add);
-        loadSkill(instance, "woodcutting.conf", TypeToken.of(MiningSkill.class), configDir)
+        loadSkill(instance, "woodcutting.conf", TypeToken.of(WoodcuttingSkill.class), configDir)
                     .ifPresent(skills::add);
 
         return skills;

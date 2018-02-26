@@ -22,6 +22,8 @@ package io.github.zerthick.mcskills;
 import com.google.inject.Inject;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
+import io.github.zerthick.mcskills.api.event.experience.McSkillsChangeExperienceEvent;
+import io.github.zerthick.mcskills.api.event.experience.McSkillsEventContextKeys;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
@@ -33,11 +35,13 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.Text;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -132,5 +136,12 @@ public class McSkills {
 
     }
 
+    @Listener
+    public void onPlayerGainExp(McSkillsChangeExperienceEvent.Gain event) {
+        logger.info(event.getCause().toString());
+        Player player = event.getTargetEntity();
+        String skillID = event.getContext().get(McSkillsEventContextKeys.MCSKILLS_SKILL_ID).get();
+        player.sendMessage(Text.of("You gained " + event.getExperience() + " experience in " + skillID));
+    }
 
 }
