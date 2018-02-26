@@ -23,10 +23,11 @@ import com.google.inject.Inject;
 import io.github.zerthick.mcskills.account.McSkillsAccountServiceImpl;
 import io.github.zerthick.mcskills.api.account.McSkillsAccountService;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
+import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
 import io.github.zerthick.mcskills.experience.McSkillsExperienceServiceImpl;
 import io.github.zerthick.mcskills.skill.McSkillsSkillServiceImpl;
-import io.github.zerthick.mcskills.skill.harvest.mining.MiningSkill;
+import io.github.zerthick.mcskills.utils.config.ConfigManager;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -36,12 +37,10 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Text;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collection;
 
 @Plugin(
         id = "mcskills",
@@ -100,14 +99,21 @@ public class McSkills {
         // Register default Skill Service
         McSkillsSkillService skillService = new McSkillsSkillServiceImpl(this);
         Sponge.getServiceManager().setProvider(this, McSkillsSkillService.class, skillService);
+
+        // Register Config Serializers
+        ConfigManager.registerSerializers();
+
     }
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
-        // Register basic skills TODO: Check to see if skill should be enabled from a config
+        // Register skills
+        Collection<McSkillsSkill> skills = ConfigManager.loadSkills(instance, defaultConfigDir, logger);
         McSkillsSkillService skillService = Sponge.getServiceManager().provideUnchecked(McSkillsSkillService.class);
-        skillService.registerSkill(new MiningSkill(Text.of("Mining"), Text.of("Mine stuff!"), new HashSet<>(), new HashMap<>()));
+
+        skills.forEach(skillService::registerSkill);
+
 
         // Log Start Up to Console
         logger.info(

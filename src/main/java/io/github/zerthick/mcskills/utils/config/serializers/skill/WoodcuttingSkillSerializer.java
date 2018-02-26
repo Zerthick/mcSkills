@@ -51,11 +51,11 @@ public class WoodcuttingSkillSerializer implements TypeSerializer<WoodcuttingSki
         Collection<McSkillsAbility> abilities = new HashSet<>(); //TODO: Read in abilities from config
         Map<BlockState, Integer> blockExperienceMap = new HashMap<>();
 
-        Map<BlockType, Integer> blockTypeExperienceMap = value.getNode("experience", "blocktypes").getValue(new TypeToken<Map<BlockType, Integer>>() {
+        Map<BlockType, Integer> blockTypeExperienceMap = value.getNode("experience", "blockTypes").getValue(new TypeToken<Map<BlockType, Integer>>() {
         });
         blockTypeExperienceMap.forEach((k, v) -> k.getAllBlockStates().forEach(blockState -> blockExperienceMap.put(blockState, v)));
 
-        blockExperienceMap.putAll(value.getNode("experience", "blockstates").getValue(new TypeToken<Map<BlockState, Integer>>() {
+        blockExperienceMap.putAll(value.getNode("experience", "blockStates").getValue(new TypeToken<Map<BlockState, Integer>>() {
         }, new HashMap<>()));
 
         return new WoodcuttingSkill(skillName, skillDescription, abilities, blockExperienceMap);
