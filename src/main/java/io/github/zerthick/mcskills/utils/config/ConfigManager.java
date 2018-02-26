@@ -20,8 +20,13 @@
 package io.github.zerthick.mcskills.utils.config;
 
 import com.google.common.reflect.TypeToken;
+import io.github.zerthick.mcskills.api.experience.formula.McSkillsExperienceFormula;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
+import io.github.zerthick.mcskills.experience.formula.ExponentialFormula;
+import io.github.zerthick.mcskills.experience.formula.LinearFormula;
 import io.github.zerthick.mcskills.skill.harvest.mining.MiningSkill;
+import io.github.zerthick.mcskills.utils.config.serializers.formula.ExponentialFormulaSerializer;
+import io.github.zerthick.mcskills.utils.config.serializers.formula.LinearFormulaSerializer;
 import io.github.zerthick.mcskills.utils.config.serializers.skill.GardeningSkillSerializer;
 import io.github.zerthick.mcskills.utils.config.serializers.skill.MiningSkillSerializer;
 import io.github.zerthick.mcskills.utils.config.serializers.skill.WoodcuttingSkillSerializer;
@@ -43,25 +48,56 @@ import java.util.Optional;
 public class ConfigManager {
 
     public static void registerSerializers() {
+
+        ExponentialFormulaSerializer.register();
+        LinearFormulaSerializer.register();
+
         MiningSkillSerializer.register();
         GardeningSkillSerializer.register();
         WoodcuttingSkillSerializer.register();
     }
 
-    public static Collection<McSkillsSkill> loadSkills(PluginContainer instance, Path configDir, Logger logger) {
+    public static Optional<McSkillsExperienceFormula> loadDefaultFormula(PluginContainer instance, Path configDir, Logger logger) throws IOException, ObjectMappingException {
+
+        String formulaConfig = "experienceFormulas.conf";
+
+        Path formulaConfigPath = configDir.resolve(formulaConfig);
+
+        ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(formulaConfigPath).build();
+
+        if (!Files.isRegularFile(formulaConfigPath)) {
+            Optional<Asset> defaultConfig = instance.getAsset(formulaConfig);
+
+            if (defaultConfig.isPresent()) {
+                defaultConfig.get().copyToFile(formulaConfigPath);
+            }
+        }
+
+        CommentedConfigurationNode node = configLoader.load();
+
+        String formulaType = node.getNode("type").getString();
+
+        if (formulaType.equals("LINEAR")) {
+            return Optional.of(node.getNode("linear").getValue(TypeToken.of(LinearFormula.class)));
+        }
+
+        if (formulaType.equals("EXPONENTIAL")) {
+            return Optional.of(node.getNode("exponential").getValue(TypeToken.of(ExponentialFormula.class)));
+        }
+
+        return Optional.empty();
+    }
+
+    public static Collection<McSkillsSkill> loadSkills(PluginContainer instance, Path configDir, Logger logger) throws IOException, ObjectMappingException {
 
         Collection<McSkillsSkill> skills = new ArrayList<>();
 
-        try {
-            loadSkill(instance, "mining.conf", TypeToken.of(MiningSkill.class), configDir)
+        loadSkill(instance, "mining.conf", TypeToken.of(MiningSkill.class), configDir)
                     .ifPresent(skills::add);
-            loadSkill(instance, "gardening.conf", TypeToken.of(MiningSkill.class), configDir)
+        loadSkill(instance, "gardening.conf", TypeToken.of(MiningSkill.class), configDir)
                     .ifPresent(skills::add);
-            loadSkill(instance, "woodcutting.conf", TypeToken.of(MiningSkill.class), configDir)
+        loadSkill(instance, "woodcutting.conf", TypeToken.of(MiningSkill.class), configDir)
                     .ifPresent(skills::add);
-        } catch (IOException | ObjectMappingException e) {
-            logger.error("Error loading skill config! Error: " + e.getMessage());
-        }
 
         return skills;
     }

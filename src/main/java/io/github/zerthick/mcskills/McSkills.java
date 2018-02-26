@@ -28,6 +28,7 @@ import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
 import io.github.zerthick.mcskills.experience.McSkillsExperienceServiceImpl;
 import io.github.zerthick.mcskills.skill.McSkillsSkillServiceImpl;
 import io.github.zerthick.mcskills.utils.config.ConfigManager;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -38,6 +39,7 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -83,6 +85,9 @@ public class McSkills {
     @Listener
     public void onGameInit(GameInitializationEvent event) {
 
+        // Register Config Serializers
+        ConfigManager.registerSerializers();
+
         // Register default Account Service
         try {
             McSkillsAccountService accountService = new McSkillsAccountServiceImpl(this);
@@ -94,25 +99,30 @@ public class McSkills {
 
         // Register default Experience Service
         McSkillsExperienceService experienceService = new McSkillsExperienceServiceImpl();
+        try {
+            ConfigManager.loadDefaultFormula(instance, defaultConfigDir, logger)
+                    .ifPresent(experienceService::setExperienceFormula);
+        } catch (IOException | ObjectMappingException e) {
+            logger.error("Error loading experience formula! Error: " + e.getMessage());
+        }
         Sponge.getServiceManager().setProvider(this, McSkillsExperienceService.class, experienceService);
 
         // Register default Skill Service
         McSkillsSkillService skillService = new McSkillsSkillServiceImpl(this);
         Sponge.getServiceManager().setProvider(this, McSkillsSkillService.class, skillService);
-
-        // Register Config Serializers
-        ConfigManager.registerSerializers();
-
     }
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
         // Register skills
-        Collection<McSkillsSkill> skills = ConfigManager.loadSkills(instance, defaultConfigDir, logger);
-        McSkillsSkillService skillService = Sponge.getServiceManager().provideUnchecked(McSkillsSkillService.class);
-
-        skills.forEach(skillService::registerSkill);
+        try {
+            Collection<McSkillsSkill> skills = ConfigManager.loadSkills(instance, defaultConfigDir, logger);
+            McSkillsSkillService skillService = Sponge.getServiceManager().provideUnchecked(McSkillsSkillService.class);
+            skills.forEach(skillService::registerSkill);
+        } catch (IOException | ObjectMappingException e) {
+            logger.error("Error loading skill configs! Error: " + e.getMessage());
+        }
 
 
         // Log Start Up to Console
