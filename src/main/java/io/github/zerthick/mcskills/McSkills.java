@@ -27,6 +27,7 @@ import io.github.zerthick.mcskills.api.event.experience.McSkillsEventContextKeys
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkill;
 import io.github.zerthick.mcskills.api.skill.McSkillsSkillService;
+import io.github.zerthick.mcskills.cmd.CmdRegister;
 import io.github.zerthick.mcskills.experience.McSkillsExperienceServiceImpl;
 import io.github.zerthick.mcskills.skill.McSkillsSkillServiceImpl;
 import io.github.zerthick.mcskills.utils.config.ConfigManager;
@@ -128,6 +129,8 @@ public class McSkills {
             logger.error("Error loading skill configs! Error: " + e.getMessage());
         }
 
+        // Register commands
+        CmdRegister.registerCommands(this);
 
         // Log Start Up to Console
         logger.info(
