@@ -69,12 +69,14 @@ public class ScoreboardExecutor extends AbstractCmdExecutor {
         List<Text> contents = new ArrayList<>();
 
         skillService.getRegisteredSkills().forEach(mcSkillsSkill -> {
-            int level = account.getSkillLevel(mcSkillsSkill.getSkillID());
-            long levelExp = experienceService.getLevelExperience(level);
-            long exp = account.getSkillExperience(mcSkillsSkill.getSkillID());
+            if (user.hasPermission(mcSkillsSkill.getSkillPermission())) {
+                int level = account.getSkillLevel(mcSkillsSkill.getSkillID());
+                long levelExp = experienceService.getLevelExperience(level);
+                long exp = account.getSkillExperience(mcSkillsSkill.getSkillID());
 
-            contents.add(Text.of(mcSkillsSkill.getSkillName(), ": ", level));
-            contents.add(Text.of(exp + "/" + levelExp));
+                contents.add(Text.of(mcSkillsSkill.getSkillName(), ": ", level));
+                contents.add(Text.of(exp + "/" + levelExp));
+            }
         });
 
         PaginationService pagServ = Sponge.getServiceManager().provideUnchecked(PaginationService.class);
