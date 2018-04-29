@@ -36,13 +36,25 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.Order;
+import org.spongepowered.api.event.block.ChangeBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContextKeys;
+import org.spongepowered.api.event.filter.Getter;
+import org.spongepowered.api.event.filter.IsCancelled;
+import org.spongepowered.api.event.filter.type.Include;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.Tristate;
+import org.spongepowered.api.world.LocatableBlock;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -137,6 +149,39 @@ public class McSkills {
                 instance.getName() + " version " + instance.getVersion().orElse("unknown")
                         + " enabled!");
 
+    }
+
+    @Include(value = {ChangeBlockEvent.Decay.class, ChangeBlockEvent.Grow.class, ChangeBlockEvent.Break.class})
+    @Listener(order = Order.LATE)
+    @IsCancelled(value = Tristate.FALSE)
+    public void onBlockChange(ChangeBlockEvent event) {
+        event.getTransactions().forEach(trans -> trans.getOriginal().getLocation()
+                .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)));
+    }
+
+    @Listener(order = Order.LATE)
+    @IsCancelled(value = Tristate.FALSE)
+    public void onBlockPlace(ChangeBlockEvent.Place event, @Getter("getCause") Cause cause) {
+
+        Object root = cause.root();
+
+        // Growing player-placed trees naturally
+        if (root instanceof LocatableBlock) {
+            event.getTransactions().forEach(trans -> trans.getOriginal().getLocation()
+                    .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)));
+        }
+
+        // Growing blocks with bonemeal
+        cause.getContext().get(EventContextKeys.USED_ITEM).ifPresent(itemStackSnapshot -> {
+            if (itemStackSnapshot.getType().equals(ItemTypes.DYE)) {
+                itemStackSnapshot.get(Keys.DYE_COLOR).ifPresent(dyeColor -> {
+                    if (dyeColor.equals(DyeColors.WHITE)) {
+                        event.getTransactions().forEach(trans -> trans.getFinal().getLocation()
+                                .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)));
+                    }
+                });
+            }
+        });
     }
 
     @Listener
