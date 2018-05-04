@@ -45,15 +45,14 @@ import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.Getter;
-import org.spongepowered.api.event.filter.IsCancelled;
 import org.spongepowered.api.event.filter.type.Include;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.LocatableBlock;
 
 import java.io.IOException;
@@ -153,14 +152,12 @@ public class McSkills {
 
     @Include(value = {ChangeBlockEvent.Decay.class, ChangeBlockEvent.Grow.class, ChangeBlockEvent.Break.class})
     @Listener(order = Order.LATE)
-    @IsCancelled(value = Tristate.FALSE)
     public void onBlockChange(ChangeBlockEvent event) {
         event.getTransactions().forEach(trans -> trans.getOriginal().getLocation()
                 .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)));
     }
 
     @Listener(order = Order.LATE)
-    @IsCancelled(value = Tristate.FALSE)
     public void onBlockPlace(ChangeBlockEvent.Place event, @Getter("getCause") Cause cause) {
 
         Object root = cause.root();
@@ -176,8 +173,8 @@ public class McSkills {
             if (itemStackSnapshot.getType().equals(ItemTypes.DYE)) {
                 itemStackSnapshot.get(Keys.DYE_COLOR).ifPresent(dyeColor -> {
                     if (dyeColor.equals(DyeColors.WHITE)) {
-                        event.getTransactions().forEach(trans -> trans.getFinal().getLocation()
-                                .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)));
+                        Task.builder().execute(() -> event.getTransactions().forEach(trans -> trans.getFinal().getLocation()
+                                .ifPresent(loc -> loc.getExtent().setCreator(loc.getBlockPosition(), null)))).delayTicks(1).submit(this);
                     }
                 });
             }
