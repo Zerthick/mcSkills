@@ -52,7 +52,6 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.LocatableBlock;
 
 import java.io.IOException;
@@ -183,10 +182,9 @@ public class McSkills {
 
     @Listener
     public void onPlayerGainExp(McSkillsChangeExperienceEvent.Gain event) {
-        logger.info(event.getCause().toString());
         Player player = event.getTargetEntity();
-        String skillID = event.getContext().get(McSkillsEventContextKeys.MCSKILLS_SKILL_ID).get();
-        player.sendMessage(Text.of("You gained " + event.getExperience() + " experience in " + skillID));
+        event.getContext().get(McSkillsEventContextKeys.MCSKILLS_SKILL_ID).ifPresent(skillID ->
+                logger.debug(player.getName() + " gained " + event.getExperience() + " experience in " + skillID));
     }
 
 }
