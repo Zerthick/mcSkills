@@ -24,18 +24,48 @@ import org.spongepowered.api.text.Text;
 
 import java.util.Collection;
 
+/**
+ * Represents a skill for which the player can gain experience and levels.
+ * <p>
+ * Note: It is recommended that instead of implementing this interface directly, you instead extend
+ * {@link AbstractMcSkillsSkill}.
+ */
 public interface McSkillsSkill {
 
+    /**
+     * Get the ID of this skill.
+     * @return The ID
+     */
     String getSkillID();
 
+    /**
+     * Get the permission node of this skill.
+     * @return The permission node
+     */
     String getSkillPermission();
 
+    /**
+     * Get the name of this skill, formatted as {@link Text}.
+     * @return The skill name
+     */
     Text getSkillName();
 
+    /**
+     * Get the description of this skill, formatted as {@link Text}.
+     * @return The skill description
+     */
     Text getSkillDescription();
 
+    /**
+     * Gets the abilities associated with this skill.
+     * @return The skill abilities
+     */
     Collection<McSkillsAbility> getAbilities();
 
+    /**
+     * Method for registering any necessary listeners for this skill.
+     * @param plugin The main plugin object
+     */
     void registerListeners(Object plugin);
 
 }

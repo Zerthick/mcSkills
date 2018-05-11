@@ -22,6 +22,9 @@ package io.github.zerthick.mcskills.api.event.experience;
 import io.github.zerthick.mcskills.api.account.McSkillsAccount;
 import org.spongepowered.api.event.cause.EventContextKey;
 
+/**
+ * Standard mcSkills keys for use within {@link org.spongepowered.api.event.cause.EventContext}s.
+ */
 public class McSkillsEventContextKeys {
 
     public static final EventContextKey<String> MCSKILLS_SKILL_ID = EventContextKey.builder(String.class)

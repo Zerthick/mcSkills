@@ -19,10 +19,15 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
+/**
+ * Skill permissions for the standard mcSkill skills
+ */
 public class SkillPermissions {
 
     public final static String MINING = "mcskills.skill.mining";
     public final static String GARDENING = "mcskills.skill.gardening";
     public final static String WOODCUTTING = "mcskills.skill.woodcutting";
 
+    private SkillPermissions() {
+    }
 }

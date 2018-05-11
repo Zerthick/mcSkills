@@ -19,7 +19,16 @@
 
 package io.github.zerthick.mcskills.api.experience.formula;
 
+/**
+ * Represents a formula for calculating the amount of experience required to complete a level.
+ */
 public interface McSkillsExperienceFormula {
 
+    /**
+     * Calculate the amount of experience required to complete a level.
+     *
+     * @param level The level to be calculated
+     * @return The amount of experience required to complete the level
+     */
     long getLevelExperience(int level);
 }

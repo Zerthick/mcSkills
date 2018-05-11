@@ -57,6 +57,11 @@ public class McSkillsAccountImpl implements McSkillsAccount {
 
     @Override
     public void setSkillLevel(String skillID, int level) {
+
+        if (level < 0) {
+            throw new IllegalArgumentException("Level must be non-negative!");
+        }
+
         McSkillsAccountEntry entry = skillMap.getOrDefault(skillID, new McSkillsAccountEntry(0, 0));
         entry.setLevel(level);
         skillMap.put(skillID, entry);
@@ -64,6 +69,11 @@ public class McSkillsAccountImpl implements McSkillsAccount {
 
     @Override
     public void setSkillExperience(String skillID, long experience) {
+
+        if (experience < 0) {
+            throw new IllegalArgumentException("Experience must be non-negative!");
+        }
+
         McSkillsAccountEntry entry = skillMap.getOrDefault(skillID, new McSkillsAccountEntry(0, 0));
         entry.setExperience(experience);
         skillMap.put(skillID, entry);

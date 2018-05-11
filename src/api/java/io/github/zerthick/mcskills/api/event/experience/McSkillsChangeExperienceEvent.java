@@ -22,17 +22,39 @@ package io.github.zerthick.mcskills.api.event.experience;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.entity.living.humanoid.player.TargetPlayerEvent;
 
+/**
+ * An event related to a change in mcSkills experience.
+ */
 public interface McSkillsChangeExperienceEvent extends TargetPlayerEvent, Cancellable {
 
+    /**
+     * Get the experience after the event has been processed.
+     *
+     * @return The experience
+     */
     long getExperience();
 
+    /**
+     * Sets the amount of experience after an event has been processed.
+     * @param experience the amount of experience
+     */
     void setExperience(long experience);
 
+    /**
+     * Gets the original experience unmodified by event changes.
+     * @return The experience
+     */
     long getOriginalExperience();
 
+    /**
+     * An event related to gaining mcSkills experience.
+     */
     interface Gain extends McSkillsChangeExperienceEvent {
     }
 
+    /**
+     * A event related to losing mcSkills experience.
+     */
     interface Lose extends McSkillsChangeExperienceEvent {
     }
 }

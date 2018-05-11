@@ -21,20 +21,54 @@ package io.github.zerthick.mcskills.api.skill.ability;
 
 import org.spongepowered.api.text.Text;
 
+/**
+ * Represents either an active or passive ability of a {@link io.github.zerthick.mcskills.api.skill.McSkillsSkill}.
+ * <p>
+ * Note: It is recommended that instead of implementing this interface directly, you instead extend either
+ * {@link AbstractMcSkillsActiveAbility} or {@link AbstractMcSkillsPassiveAbility}.
+ */
 public interface McSkillsAbility {
 
+    /**
+     * Get the ID of this ability.
+     * @return The ID
+     */
     String getAbilityID();
 
+    /**
+     * Get the permission node of this ability.
+     * @return The permission node
+     */
     String getAbilityPermission();
 
+    /**
+     * Get the minimum skill level necessary to use this ability.
+     * @return The minimum skill level
+     */
     int getAbilityLevel();
 
+    /**
+     * Get the name of this ability, formatted as {@link Text}.
+     * @return The ability name
+     */
     Text getAbilityName();
 
+    /**
+     * Get the description of this ability, formatted as {@link Text}.
+     * @return The ability description
+     */
     Text getAbilityDescription();
 
+    /**
+     * Get the {@link AbilityType} of this ability.
+     * @return The {@link AbilityType}
+     */
     AbilityType getAbilityType();
 
+    /**
+     * Method for registering any necessary listeners for this ability.
+     * @param plugin The main plugin object
+     */
     void registerListeners(Object plugin);
 
 }

@@ -22,12 +22,31 @@ package io.github.zerthick.mcskills.api.skill;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Represents a service for registering skills
+ */
 public interface McSkillsSkillService {
 
+    /**
+     * Register a {@link McSkillsSkill}.
+     * <p>
+     * Should be called during the {@link org.spongepowered.api.event.game.state.GameStartedServerEvent}.
+     *
+     * @param skill The {@link McSkillsSkill} to register.
+     */
     void registerSkill(McSkillsSkill skill);
 
+    /**
+     * Retrieves the registered {@link McSkillsSkill} with the specified ID if it exists.
+     * @param skillID The ID of the skill to retrieve
+     * @return {@link Optional} containing the {@link McSkillsSkill} if it exists or {@link Optional#empty()} otherwise.
+     */
     Optional<McSkillsSkill> getSkill(String skillID);
 
+    /**
+     * Retrive all of the registered skills.
+     * @return All of the registered skills
+     */
     Collection<McSkillsSkill> getRegisteredSkills();
 
 }

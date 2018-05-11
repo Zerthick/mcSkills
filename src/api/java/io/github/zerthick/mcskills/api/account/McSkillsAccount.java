@@ -21,14 +21,50 @@ package io.github.zerthick.mcskills.api.account;
 
 import java.util.UUID;
 
+/**
+ * Represents a mcSkills player account, containing the current skill experience and levels
+ * of a player.
+ */
 public interface McSkillsAccount {
+
+    /**
+     * Retrieve the player {@link UUID} associated with this account
+     *
+     * @return the player {@link UUID} associated with this account
+     */
     UUID getPlayerUUID();
 
+    /**
+     * Retrieve the current level of a skill within this account.
+     * If the player has no levels or this account does not contain and entry
+     * for a skill, should return 0.
+     * @param skillID The id of the skill to retrieve
+     * @return The player's current level
+     */
     int getSkillLevel(String skillID);
 
+    /**
+     * Retrieve the current experience of a skill within this account.
+     * If the player has no experience or this account does not contain and entry
+     * for a skill, should return 0.
+     * @param skillID The id of the skill to retrieve
+     * @return The player's current experience
+     */
     long getSkillExperience(String skillID);
 
+    /**
+     * Set the current level of a skill within this account.
+     * The level should be set to a non-negative value.
+     * @param skillID The id of the skill to set
+     * @param level The level to set the skill to
+     */
     void setSkillLevel(String skillID, int level);
 
+    /**
+     * Set the current amount of experience of a skill within this account.
+     * The amount of experience should be set to a non-negative value.
+     * @param skillID The ide of the skill to set
+     * @param experience The amount of experience to set the skill to
+     */
     void setSkillExperience(String skillID, long experience);
 }

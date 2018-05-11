@@ -22,21 +22,51 @@ package io.github.zerthick.mcskills.api.event.experience;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.entity.living.humanoid.player.TargetPlayerEvent;
 
+/**
+ * An event related to a change in mcSkills levels.
+ */
 public interface McSkillsChangeLevelEvent extends TargetPlayerEvent, Cancellable {
 
+    /**
+     * Get the skill level after the event has been processed.
+     *
+     * @return The skill level
+     */
     int getLevel();
 
+    /**
+     * Sets the skill level after an event has been processed.
+     * @param level The skill level
+     */
     void setLevel(int level);
 
+    /**
+     * Gets the original skill level unmodified by event changes.
+     * @return The skill level
+     */
     int getOriginalLevel();
 
+    /**
+     * Gets the remaining experience after the event has been processed.
+     * @return The experience
+     */
     long getRemainingExperience();
 
+    /**
+     * Sets the remaining experience after the event has been processed.
+     * @param experience The experience
+     */
     void setRemainingExperience(long experience);
 
+    /**
+     * An event related to a gain in mcSkills levels.
+     */
     interface Up extends McSkillsChangeLevelEvent {
     }
 
+    /**
+     * An event related to a loss in mcSkills levels.
+     */
     interface Down extends McSkillsChangeLevelEvent {
     }
 

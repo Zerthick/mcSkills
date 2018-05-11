@@ -21,10 +21,25 @@ package io.github.zerthick.mcskills.api.account;
 
 import java.util.UUID;
 
+/**
+ * Represents a service for retrieving {@link McSkillsAccount}s
+ */
 public interface McSkillsAccountService {
 
+    /**
+     * Gets the {@link McSkillsAccount} associated with the specified player's {@link UUID}.
+     * If the account does not exist, a new account will be created associated with the specified {@link UUID}
+     *
+     * @param playerUniqueIdentifier the {@link UUID} of the player associated with the account
+     * @return The {@link McSkillsAccount} associated with the specified {@link UUID}
+     */
     McSkillsAccount getOrCreateAccount(UUID playerUniqueIdentifier);
 
+    /**
+     * Returns whether an {@link McSkillsAccount} associated with the specified player's {@link UUID} exists.
+     * @param playerUniqueIdentifier the {@link UUID} of the player associated with the account
+     * @return Whether an {@link McSkillsAccount} associated with the specified player's {@link UUID} exists
+     */
     boolean hasAccount(UUID playerUniqueIdentifier);
 
 }

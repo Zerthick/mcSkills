@@ -19,10 +19,15 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
+/**
+ * Skill IDs for the standard mcSkill skills
+ */
 public class SkillIDs {
 
     public final static String MINING = "mcskills:mining";
     public final static String GARDENING = "mcskills:gardening";
     public final static String WOODCUTTING = "mcskills:woodcutting";
 
+    private SkillIDs() {
+    }
 }

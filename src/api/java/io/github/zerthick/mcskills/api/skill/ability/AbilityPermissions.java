@@ -19,10 +19,15 @@
 
 package io.github.zerthick.mcskills.api.skill.ability;
 
+/**
+ * Ability permissions for the standard mcSkill abilities
+ */
 public class AbilityPermissions {
 
     public final static String MINING_DOUBLE_DROPS = "mcskills.ability.mining.double_drops";
     public final static String GARDENING_DOUBLE_DROPS = "mcskills.ability.gardening.double_drops";
     public final static String WOODCUTTING_DOUBLE_DROPS = "mcskills.ability.woodcutting.double_drops";
 
+    private AbilityPermissions() {
+    }
 }
