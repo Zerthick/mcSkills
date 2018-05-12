@@ -23,7 +23,6 @@ import com.google.common.reflect.TypeToken;
 import io.github.zerthick.mcskills.api.skill.SkillIDs;
 import io.github.zerthick.mcskills.api.skill.ability.AbilityIDs;
 import io.github.zerthick.mcskills.api.skill.ability.AbilityPermissions;
-import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import io.github.zerthick.mcskills.skill.ability.passive.harvest.DoubleDropAbility;
 import io.github.zerthick.mcskills.skill.harvest.gardening.GardeningSkill;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -35,9 +34,7 @@ import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class GardeningSkillSerializer implements TypeSerializer<GardeningSkill> {
@@ -60,7 +57,11 @@ public class GardeningSkillSerializer implements TypeSerializer<GardeningSkill> 
         blockExperienceMap.putAll(value.getNode("experience", "blockStates").getValue(new TypeToken<Map<BlockState, Integer>>() {
         }, new HashMap<>()));
 
-        Collection<McSkillsAbility> abilities = new HashSet<>();
+        GardeningSkill gardeningSkill = new GardeningSkill(blockExperienceMap);
+        gardeningSkill.setSkillName(skillName);
+        gardeningSkill.setSkillDescription(skillDescription);
+
+        // Abilities
         ConfigurationNode abilityNode = value.getNode("abilities");
 
         // Double Drops
@@ -69,16 +70,14 @@ public class GardeningSkillSerializer implements TypeSerializer<GardeningSkill> 
         Text abilityDescription = TextSerializers.FORMATTING_CODE.deserialize(doubleDropNode.getNode("abilityDescription").getString());
         int minLevel = doubleDropNode.getNode("minLevel").getInt();
         float scaleFactor = doubleDropNode.getNode("scaleFactor").getFloat();
-        abilities.add(new DoubleDropAbility(SkillIDs.GARDENING,
-                AbilityIDs.GARDENING_DOUBLE_DROPS,
-                AbilityPermissions.GARDENING_DOUBLE_DROPS,
-                minLevel,
-                abilityName,
-                abilityDescription,
-                blockExperienceMap.keySet(),
-                scaleFactor));
 
-        return new GardeningSkill(skillName, skillDescription, abilities, blockExperienceMap);
+        DoubleDropAbility doubleDropAbility = new DoubleDropAbility(AbilityIDs.GARDENING_DOUBLE_DROPS, AbilityPermissions.GARDENING_DOUBLE_DROPS, minLevel, scaleFactor, blockExperienceMap.keySet(), SkillIDs.GARDENING);
+        doubleDropAbility.setAbilityName(abilityName);
+        doubleDropAbility.setAbilityDescription(abilityDescription);
+
+        gardeningSkill.addAbility(doubleDropAbility);
+
+        return gardeningSkill;
     }
 
     @Override

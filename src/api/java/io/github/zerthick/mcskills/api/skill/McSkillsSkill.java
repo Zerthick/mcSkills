@@ -19,10 +19,9 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
+import com.google.common.collect.ImmutableCollection;
 import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import org.spongepowered.api.text.Text;
-
-import java.util.Collection;
 
 /**
  * Represents a skill for which the player can gain experience and levels.
@@ -60,10 +59,12 @@ public interface McSkillsSkill {
      * Gets the abilities associated with this skill.
      * @return The skill abilities
      */
-    Collection<McSkillsAbility> getAbilities();
+    ImmutableCollection<McSkillsAbility> getAbilities();
 
     /**
      * Method for registering any necessary listeners for this skill.
+     *
+     * This method should also register any listeners for the skill abilities.
      * @param plugin The main plugin object
      */
     void registerListeners(Object plugin);

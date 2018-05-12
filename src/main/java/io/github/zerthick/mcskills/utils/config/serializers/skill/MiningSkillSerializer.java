@@ -23,7 +23,6 @@ import com.google.common.reflect.TypeToken;
 import io.github.zerthick.mcskills.api.skill.SkillIDs;
 import io.github.zerthick.mcskills.api.skill.ability.AbilityIDs;
 import io.github.zerthick.mcskills.api.skill.ability.AbilityPermissions;
-import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import io.github.zerthick.mcskills.skill.ability.passive.harvest.DoubleDropAbility;
 import io.github.zerthick.mcskills.skill.harvest.mining.MiningSkill;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -35,9 +34,7 @@ import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class MiningSkillSerializer implements TypeSerializer<MiningSkill> {
@@ -60,7 +57,11 @@ public class MiningSkillSerializer implements TypeSerializer<MiningSkill> {
         blockExperienceMap.putAll(value.getNode("experience", "blockStates").getValue(new TypeToken<Map<BlockState, Integer>>() {
         }, new HashMap<>()));
 
-        Collection<McSkillsAbility> abilities = new HashSet<>();
+        MiningSkill miningSkill = new MiningSkill(blockExperienceMap);
+        miningSkill.setSkillName(skillName);
+        miningSkill.setSkillDescription(skillDescription);
+
+        // Abilities
         ConfigurationNode abilityNode = value.getNode("abilities");
 
         // Double Drops
@@ -69,16 +70,14 @@ public class MiningSkillSerializer implements TypeSerializer<MiningSkill> {
         Text abilityDescription = TextSerializers.FORMATTING_CODE.deserialize(doubleDropNode.getNode("abilityDescription").getString());
         int minLevel = doubleDropNode.getNode("minLevel").getInt();
         float scaleFactor = doubleDropNode.getNode("scaleFactor").getFloat();
-        abilities.add(new DoubleDropAbility(SkillIDs.MINING,
-                AbilityIDs.MINING_DOUBLE_DROPS,
-                AbilityPermissions.MINING_DOUBLE_DROPS,
-                minLevel,
-                abilityName,
-                abilityDescription,
-                blockExperienceMap.keySet(),
-                scaleFactor));
 
-        return new MiningSkill(skillName, skillDescription, abilities, blockExperienceMap);
+        DoubleDropAbility doubleDropAbility = new DoubleDropAbility(AbilityIDs.MINING_DOUBLE_DROPS, AbilityPermissions.MINING_DOUBLE_DROPS, minLevel, scaleFactor, blockExperienceMap.keySet(), SkillIDs.MINING);
+        doubleDropAbility.setAbilityName(abilityName);
+        doubleDropAbility.setAbilityDescription(abilityDescription);
+
+        miningSkill.addAbility(doubleDropAbility);
+
+        return miningSkill;
     }
 
     @Override

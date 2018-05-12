@@ -21,17 +21,14 @@ package io.github.zerthick.mcskills.skill.harvest.woodcutting;
 
 import io.github.zerthick.mcskills.api.skill.SkillIDs;
 import io.github.zerthick.mcskills.api.skill.SkillPermissions;
-import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import io.github.zerthick.mcskills.skill.harvest.AbstractHarvestSkill;
 import org.spongepowered.api.block.BlockState;
-import org.spongepowered.api.text.Text;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class WoodcuttingSkill extends AbstractHarvestSkill {
 
-    public WoodcuttingSkill(Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities, Map<BlockState, Integer> blockExperienceMap) {
-        super(SkillIDs.WOODCUTTING, SkillPermissions.WOODCUTTING, skillName, skillDescription, abilities, blockExperienceMap);
+    public WoodcuttingSkill(Map<BlockState, Integer> blockExperienceMap) {
+        super(SkillIDs.WOODCUTTING, SkillPermissions.WOODCUTTING, blockExperienceMap);
     }
 }

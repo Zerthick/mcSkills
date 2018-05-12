@@ -19,28 +19,43 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 public abstract class AbstractMcSkillsSkill implements McSkillsSkill {
 
     protected final String skillID;
     protected final String skillPermission;
-    protected final Text skillName;
-    protected final Text skillDescription;
 
+    protected Text skillName;
+    protected Text skillDescription;
     protected Collection<McSkillsAbility> abilities;
 
-    public AbstractMcSkillsSkill(String skillID, String skillPermission, Text skillName, Text skillDescription, Collection<McSkillsAbility> abilities) {
+    public AbstractMcSkillsSkill(String skillID, String skillPermission) {
         this.skillID = skillID;
         this.skillPermission = skillPermission;
+        skillName = Text.EMPTY;
+        skillDescription = Text.EMPTY;
+        abilities = new HashSet<>();
+    }
+
+    public void setSkillName(Text skillName) {
         this.skillName = skillName;
+    }
+
+    public void setSkillDescription(Text skillDescription) {
         this.skillDescription = skillDescription;
-        this.abilities = abilities;
+    }
+
+    public void addAbility(McSkillsAbility ability) {
+        abilities.add(ability);
     }
 
     @Override
@@ -64,8 +79,8 @@ public abstract class AbstractMcSkillsSkill implements McSkillsSkill {
     }
 
     @Override
-    public Collection<McSkillsAbility> getAbilities() {
-        return abilities;
+    public ImmutableCollection<McSkillsAbility> getAbilities() {
+        return ImmutableSet.copyOf(abilities);
     }
 
     @Override

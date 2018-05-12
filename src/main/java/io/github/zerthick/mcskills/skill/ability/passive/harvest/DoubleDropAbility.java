@@ -40,83 +40,55 @@ import java.util.Set;
 
 public class DoubleDropAbility extends AbstractMcSkillsPassiveAbility {
 
-    private Set<BlockState> doubleDropBlocks;
-    private float scaleFactor;
+    private final float scaleFactor;
+    private final Set<BlockState> doubleDropBlocks;
+    private final String skillID;
 
-    public DoubleDropAbility(String skillID, String abilityID, String abilityPermission, int abilityLevel, Text abilityName, Text abilityDescription, Set<BlockState> doubleDropBlocks, float scaleFactor) {
-        super(skillID, abilityID, abilityPermission, abilityLevel, abilityName, abilityDescription);
-
-        this.doubleDropBlocks = doubleDropBlocks;
+    public DoubleDropAbility(String abilityID, String abilityPermission, int abilityLevel, float scaleFactor, Set<BlockState> doubleDropBlocks, String skillID) {
+        super(abilityID, abilityPermission, abilityLevel);
         this.scaleFactor = scaleFactor;
+        this.doubleDropBlocks = doubleDropBlocks;
+        this.skillID = skillID;
     }
 
     @Listener
     public void onItemDrop(DropItemEvent.Pre event, @Root BlockSnapshot blockSnapshot) {
-        event.getCause().getContext().get(EventContextKeys.OWNER).ifPresent(user -> {
-            if (user.hasPermission(abilityPermission)) {
-                McSkillsAccountService accountService = Sponge.getServiceManager().provideUnchecked(McSkillsAccountService.class);
 
-                int playerSkillLevel = accountService.getOrCreateAccount(user.getUniqueId()).getSkillLevel(skillID);
+        if (doubleDropBlocks.contains(blockSnapshot.getState())) {
 
-                if (playerSkillLevel >= abilityLevel) {
-                    int diff = playerSkillLevel - abilityLevel;
-                    float scale = scaleFactor * diff;
+            event.getCause().getContext().get(EventContextKeys.OWNER).ifPresent(user -> {
+                if (user.hasPermission(abilityPermission)) {
+                    McSkillsAccountService accountService = Sponge.getServiceManager().provideUnchecked(McSkillsAccountService.class);
 
-                    float random = RNGenerator.generateRandomFloat(0, 100);
-                    if (random <= scale) {
+                    int playerSkillLevel = accountService.getOrCreateAccount(user.getUniqueId()).getSkillLevel(skillID);
 
-                        if (blockSnapshot.getState().getValue(Keys.GROWTH_STAGE).isPresent() || !blockSnapshot.getCreator().isPresent()) {
+                    if (playerSkillLevel >= abilityLevel) {
+                        int diff = playerSkillLevel - abilityLevel;
+                        float scale = scaleFactor * diff;
 
-                            List<ItemStackSnapshot> drops = event.getDroppedItems();
+                        float random = RNGenerator.generateRandomFloat(0, 100);
+                        if (random <= scale) {
 
-                            event.getDroppedItems().addAll(drops);
+                            if (blockSnapshot.getState().getValue(Keys.GROWTH_STAGE).isPresent() || !blockSnapshot.getCreator().isPresent()) {
 
-                            blockSnapshot.getLocation().ifPresent(worldLocation -> {
-                                ParticleEffect particleEffect = ParticleEffect.builder()
-                                        .type(ParticleTypes.FERTILIZER)
-                                        .quantity(5)
-                                        .build();
-                                worldLocation.getExtent().spawnParticles(particleEffect, worldLocation.getBlockPosition().toDouble());
-                            });
+                                List<ItemStackSnapshot> drops = event.getDroppedItems();
 
-                            user.getPlayer().ifPresent(player -> player.sendMessage(Text.of("Double Drops!")));
+                                event.getDroppedItems().addAll(drops);
+
+                                blockSnapshot.getLocation().ifPresent(worldLocation -> {
+                                    ParticleEffect particleEffect = ParticleEffect.builder()
+                                            .type(ParticleTypes.FERTILIZER)
+                                            .quantity(5)
+                                            .build();
+                                    worldLocation.getExtent().spawnParticles(particleEffect, worldLocation.getBlockPosition().toDouble());
+                                });
+
+                                user.getPlayer().ifPresent(player -> player.sendMessage(Text.of("Double Drops!")));
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
-
-    /*@Listener
-    public void onBlockBreak(ChangeBlockEvent.Break event, @Root Player player) {
-
-        if (player.hasPermission(abilityPermission)) {
-
-            McSkillsAccountService accountService = Sponge.getServiceManager().provideUnchecked(McSkillsAccountService.class);
-
-            int playerSkillLevel = accountService.getOrCreateAccount(player.getUniqueId()).getSkillLevel(skillID);
-
-            if(playerSkillLevel >= abilityLevel) {
-                int diff = playerSkillLevel - abilityLevel;
-                float scale = scaleFactor*diff;
-
-                float random = RNGenerator.generateRandomFloat(0, 100);
-                if(random <= scale) {
-
-                    List<Transaction<BlockSnapshot>> doubleTransactions = new ArrayList<>();
-
-                    for(Transaction<BlockSnapshot> transaction : event.getTransactions()) {
-                        BlockSnapshot blockSnapshot = transaction.getOriginal();
-                        BlockState blockState = blockSnapshot.getState();
-
-                        if(blockState.getValue(Keys.GROWTH_STAGE).isPresent() || !blockSnapshot.getCreator().isPresent()) {
-                            transaction.getFinal().
-                        }
-                    }
-                    player.sendMessage(Text.of("Double drops!"));
-                }
-            }
+            });
         }
-
-    }*/
+    }
 }
