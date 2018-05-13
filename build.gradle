@@ -36,9 +36,6 @@ repositories {
 
 sourceSets {
     api
-    main {
-        compileClasspath += api.compileClasspath + api.output
-    }
 }
 
 spongestart{
@@ -48,4 +45,23 @@ spongestart{
 dependencies {
     apiCompile 'org.spongepowered:spongeapi:7.0.0'
     compile 'org.spongepowered:spongeapi:7.0.0'
+    compileOnly sourceSets.api.output
+}
+
+jar {
+    from sourceSets.api.output
+}
+
+task apiJar(type: Jar) {
+    classifier = 'api'
+    from sourceSets.api.output
+}
+
+javadoc {
+    source = sourceSets.api.java
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
 }
