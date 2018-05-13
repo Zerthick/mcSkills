@@ -20,7 +20,7 @@
 package io.github.zerthick.mcskills.api.skill.ability;
 
 /**
- * enum for the two different ability types: Active and Passive
+ * enum for the two different ability types: Active and Passive.
  */
 public enum AbilityType {
     ACTIVE,

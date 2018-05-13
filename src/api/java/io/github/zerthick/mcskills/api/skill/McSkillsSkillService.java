@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Represents a service for registering skills
+ * Represents a service for registering skills.
  */
 public interface McSkillsSkillService {
 

@@ -23,7 +23,7 @@ import io.github.zerthick.mcskills.api.experience.formula.McSkillsExperienceForm
 import org.spongepowered.api.entity.living.player.Player;
 
 /**
- * Represents a service for adding and removing mcSkills experience from players
+ * Represents a service for adding and removing mcSkills experience from players.
  */
 public interface McSkillsExperienceService {
 

@@ -22,7 +22,7 @@ package io.github.zerthick.mcskills.api.account;
 import java.util.UUID;
 
 /**
- * Represents a service for retrieving {@link McSkillsAccount}s
+ * Represents a service for retrieving {@link McSkillsAccount}s.
  */
 public interface McSkillsAccountService {
 

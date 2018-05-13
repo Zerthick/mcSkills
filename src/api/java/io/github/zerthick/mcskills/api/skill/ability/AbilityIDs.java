@@ -20,7 +20,7 @@
 package io.github.zerthick.mcskills.api.skill.ability;
 
 /**
- * Ability IDs for the standard mcSkill abilities
+ * Ability IDs for the standard mcSkill abilities.
  */
 public class AbilityIDs {
 
