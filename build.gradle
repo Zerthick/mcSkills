@@ -59,6 +59,7 @@ task apiJar(type: Jar) {
 
 javadoc {
     source = sourceSets.api.java
+    options.links("https://docs.oracle.com/javase/8/docs/api/","https://jd.spongepowered.org/7.0.0/")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

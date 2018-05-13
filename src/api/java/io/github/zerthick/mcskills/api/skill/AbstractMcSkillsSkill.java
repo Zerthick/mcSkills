@@ -19,7 +19,6 @@
 
 package io.github.zerthick.mcskills.api.skill;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import io.github.zerthick.mcskills.api.experience.McSkillsExperienceService;
 import io.github.zerthick.mcskills.api.skill.ability.McSkillsAbility;
@@ -79,7 +78,7 @@ public abstract class AbstractMcSkillsSkill implements McSkillsSkill {
     }
 
     @Override
-    public ImmutableCollection<McSkillsAbility> getAbilities() {
+    public Collection<McSkillsAbility> getAbilities() {
         return ImmutableSet.copyOf(abilities);
     }
 
