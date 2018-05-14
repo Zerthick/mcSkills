@@ -100,6 +100,7 @@ uploadArchives {
 
             pom.project {
                 name 'mcSkills'
+                artifactId 'mcskills'
                 packaging 'jar'
                 description 'A Minecraft RPG plugin'
                 url 'https://github.com/Zerthick/mcSkills'
