@@ -21,6 +21,8 @@ plugins {
     id 'org.spongepowered.plugin' version '0.8.1'
     id 'java'
     id "com.qixalite.spongestart2" version "3.1.0"
+    id 'maven'
+    id 'signing'
 }
 
 group 'io.github.zerthick'
@@ -66,3 +68,69 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+    from sourceSets.api.allSource
+}
+
+artifacts {
+    archives apiJar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'mcSkills'
+                packaging 'jar'
+                description 'A Minecraft RPG plugin'
+                url 'https://github.com/Zerthick/mcSkills'
+
+                scm {
+                    connection 'scm:git:https://github.com/Zerthick/mcSkills.git'
+                    developerConnection 'scm:git:git@github.com:Zerthick/mcSkills.git'
+                    url 'https://github.com/Zerthick/mcSkills'
+                }
+
+                issueManagement {
+                    system = 'GitHub Issues'
+                    url = "https://github.com/Zerthick/mcSkills/issues"
+                }
+
+                licenses {
+                    license {
+                        name 'GNU General Public License v2.0'
+                        url 'https://github.com/Zerthick/mcSkills/blob/master/LICENSE.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'Zerthick'
+                        name 'Chase Greco'
+                        email 'zerthick@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
