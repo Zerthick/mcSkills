@@ -61,7 +61,7 @@ import java.util.Collection;
 
 @Plugin(
         id = "mcskills",
-        name = "McSkills",
+        name = "mcSkills",
         description = "A Minecraft RPG plugin",
         authors = {
                 "Zerthick",
