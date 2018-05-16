@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class McSkillsAccountServiceImpl implements McSkillsAccountService {
@@ -44,14 +45,14 @@ public class McSkillsAccountServiceImpl implements McSkillsAccountService {
     public McSkillsAccountServiceImpl(McSkills plugin) throws SQLException {
 
         db = new Database(plugin);
-        accountCache = new HashMap<>();
+        accountCache = new ConcurrentHashMap<>();
 
         // Save all accounts to the DB asynchronously every 5 mins
         Task.builder()
                 .async()
                 .interval(5, TimeUnit.MINUTES)
                 .name("McSkills Account Save Task")
-                .execute(() -> new HashMap<>(accountCache).values().forEach(db::savePlayerAccount))
+                .execute(() -> accountCache.values().forEach(db::savePlayerAccount))
                 .submit(plugin);
     }
 
