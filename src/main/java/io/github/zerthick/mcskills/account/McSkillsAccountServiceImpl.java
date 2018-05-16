@@ -51,7 +51,7 @@ public class McSkillsAccountServiceImpl implements McSkillsAccountService {
                 .async()
                 .interval(5, TimeUnit.MINUTES)
                 .name("McSkills Account Save Task")
-                .execute(() -> accountCache.values().forEach(db::savePlayerAccount))
+                .execute(() -> new HashMap<>(accountCache).values().forEach(db::savePlayerAccount))
                 .submit(plugin);
     }
 
