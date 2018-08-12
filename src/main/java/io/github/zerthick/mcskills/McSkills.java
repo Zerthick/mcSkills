@@ -56,7 +56,6 @@ import org.spongepowered.api.world.LocatableBlock;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.Collection;
 
 @Plugin(
@@ -104,13 +103,9 @@ public class McSkills {
         ConfigManager.registerSerializers();
 
         // Register default Account Service
-        try {
-            McSkillsAccountService accountService = new McSkillsAccountServiceImpl(this);
-            Sponge.getServiceManager().setProvider(this, McSkillsAccountService.class, accountService);
-            Sponge.getEventManager().registerListeners(this, accountService);
-        } catch (SQLException e) {
-            logger.error("Error registering default account service! Error: " + e.getMessage());
-        }
+        McSkillsAccountService accountService = new McSkillsAccountServiceImpl(this);
+        Sponge.getServiceManager().setProvider(this, McSkillsAccountService.class, accountService);
+        Sponge.getEventManager().registerListeners(this, accountService);
 
         // Register default Experience Service
         McSkillsExperienceService experienceService = new McSkillsExperienceServiceImpl();

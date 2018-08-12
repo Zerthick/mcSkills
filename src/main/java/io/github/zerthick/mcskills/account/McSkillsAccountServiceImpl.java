@@ -30,7 +30,6 @@ import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.scheduler.Task;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public class McSkillsAccountServiceImpl implements McSkillsAccountService {
     private Database db;
     private Map<UUID, McSkillsAccountImpl> accountCache;
 
-    public McSkillsAccountServiceImpl(McSkills plugin) throws SQLException {
+    public McSkillsAccountServiceImpl(McSkills plugin) {
 
         db = new Database(plugin);
         accountCache = new ConcurrentHashMap<>();

@@ -39,7 +39,7 @@ public class Database {
     private String databaseUrl;
     private Logger logger;
 
-    public Database(McSkills plugin) throws SQLException {
+    public Database(McSkills plugin) {
         logger = plugin.getLogger();
         String configDir = plugin.getDefaultConfigDir().toString();
         databaseUrl = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
@@ -54,7 +54,7 @@ public class Database {
         return sql.getDataSource(databaseUrl);
     }
 
-    private void createDatabaseTables() throws SQLException {
+    private void createDatabaseTables() {
         String sqlCreateTable = "CREATE TABLE IF NOT EXISTS" +
                 "  `playerData` (" +
                 "  `playerUUID` VARCHAR(36) NOT NULL," +
@@ -63,10 +63,13 @@ public class Database {
                 "  `skillLevel` INT NULL," +
                 "  PRIMARY KEY (`playerUUID`, `skillID`));";
 
-        Connection conn = getDataSource().getConnection();
-        Statement createStatement = conn.createStatement();
-        createStatement.execute(sqlCreateTable);
-        logger.info("Database Connection Established!");
+        try (Connection conn = getDataSource().getConnection()) {
+            Statement createStatement = conn.createStatement();
+            createStatement.execute(sqlCreateTable);
+            logger.info("Database Connection Established!");
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     /**
